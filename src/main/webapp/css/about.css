@@ -1,0 +1,17 @@
+h1 {
+  color: rgb(200,93,50);
+}
+
+.category {
+  background-color: white;
+  padding: 3px 0px 10px 16px;
+  margin:10px 0px 10px 0px;
+  border-radius: 15px;
+}
+
+.list li code{
+  font-family: Courier monospace;
+  padding: 2px 50px 1px 15px;
+  background-color:#eeeeee;
+  border-radius: 8px;
+}
