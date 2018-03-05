@@ -38,8 +38,8 @@
 
        <h1>What is the CodeU Chat App?</h1>
        <p>
-         This java-based app is aimed at simple and quick communication between teams.
-         Built by CodeU'ers, this app is a semester project that allows us to practice
+         This Java-based app is aimed at simple and quick communication between teams.
+         Built by CodeU'ers, this app is a semester long project that allows us to practice
          our software engineering and team works skills. Here, you can find information on
          recently added features and improvements.
        </p>
