@@ -37,7 +37,7 @@ public class PersistentDataStore {
 
   // Handle to Google AppEngine's Datastore service.
   private DatastoreService datastore;
-
+  
   /**
    * Constructs a new PersistentDataStore and sets up its state to begin loading objects from the
    * Datastore service.
@@ -65,7 +65,8 @@ public class PersistentDataStore {
         UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
         String userName = (String) entity.getProperty("username");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        User user = new User(uuid, userName, creationTime);
+        // TODO: get password from Datastore
+        User user = new User(uuid, userName, null, creationTime);
         users.add(user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may

@@ -74,11 +74,14 @@ public class LoginServlet extends HttpServlet {
     }
 
     if (!userStore.isUserRegistered(username)) {
-      User user = new User(UUID.randomUUID(), username, Instant.now());
+      //TODO: add password
+      User user = new User(UUID.randomUUID(), username, null, Instant.now());
       userStore.addUser(user);
     }
 
     request.getSession().setAttribute("user", username);
     response.sendRedirect("/conversations");
   }
+
+
 }
