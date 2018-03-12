@@ -20,19 +20,7 @@
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-
-  <nav>
-    <a id="navTitle" href="/">Team TNT!</a>
-    <a href="/conversations">Conversations</a>
-    <% if(request.getSession().getAttribute("user") != null){ %>
-      <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
-    <% } else{ %>
-      <a href="/login">Login</a>
-    <% } %>
-    <a href="/about.jsp">About</a>
-    <a href="/testdata">Load Test Data</a>
-  </nav>
-
+  <%@ include file = "WEB-INF/view/navbar.jsp" %>
   <div id="container">
     <div
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
