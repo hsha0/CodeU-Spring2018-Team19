@@ -64,4 +64,18 @@ public class RegisterServletTest {
 
       Mockito.verify(mockResponse).sendRedirect("/login");
     }
+    
+    @Test
+    public void testDoPost_ExistingUser() throws IOException, ServletException {
+	Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
+
+	UserStore mockUserStore = Mockito.mock(UserStore.class);
+	Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
+	registerServlet.setUserStore(mockUserStore);
+
+	registerServlet.doPost(mockRequest, mockResponse);
+
+	Mockito.verify(mockRequest).setAttribute("error", "That username is already taken.");
+	Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+    }
 }
