@@ -1,13 +1,17 @@
 package codeu.controller;
 
+import codeu.model.data.User;
+import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.mockito.ArgumentCaptor;
 
 public class RegisterServletTest {
 
@@ -41,5 +45,23 @@ public class RegisterServletTest {
 	Mockito.verify(mockRequest)
         .setAttribute("error", "Please enter only letters, numbers, and spaces.");
 	Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+    }
+    
+    @Test
+    public void testDoPost_NewUser() throws IOException, ServletException {
+      Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
+
+      UserStore mockUserStore = Mockito.mock(UserStore.class);
+      Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(false);
+      registerServlet.setUserStore(mockUserStore);
+
+      registerServlet.doPost(mockRequest, mockResponse);
+
+      ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+
+      Mockito.verify(mockUserStore).addUser(userArgumentCaptor.capture());
+      Assert.assertEquals(userArgumentCaptor.getValue().getName(), "test username");
+
+      Mockito.verify(mockResponse).sendRedirect("/login");
     }
 }
