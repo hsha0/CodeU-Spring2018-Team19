@@ -19,10 +19,10 @@ import org.jsoup.safety.Whitelist;
 
 /**
  * Takes care of sanitizing input.
- * Here, whitelist allows full range of text nodes, safe links, and image tags.
+ * Here, whitelist allows full range of text nodes and safe links.
  * Requires: [message] is input untrusted HTML
  * Returns: safe HTML according to white-list of permitted tags and attributes.
  */
 public String cleanMessage (String message){
-  return Jsoup.clean(message, Whitelist.basicWithImages());
+  return Jsoup.clean(message, Whitelist.basic());
 }
