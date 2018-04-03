@@ -62,7 +62,8 @@ public class RegisterServlet extends HttpServlet {
 	    return;
 	}
 
-	User user = new User(UUID.randomUUID(), username, password, Instant.now());
+	User user = new User(UUID.randomUUID(), username, password, Instant.now(), 0, "First Name", "Last Name", "no-reply@example.com",
+		"123-456-7890", "Hello World!");
 	userStore.addUser(user);
 
 	response.sendRedirect("/login");

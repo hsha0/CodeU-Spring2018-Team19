@@ -23,7 +23,7 @@ public class User {
     private final String name;
     private final String password;
     private final Instant creation;
-    private final Integer Age;
+    private final Integer age;
     private final String firstName;
     private final String lastName;
     private final String email;
@@ -33,30 +33,107 @@ public class User {
     /**
      * Constructs a new User.
      *
-     * @param id
-     *            the ID of this User
-     * @param name
-     *            the username of this User
-     * @param password
-     *            the password of this User
-     * @param creation
-     *            the creation time of this User
+     * @param newId the ID of this User
+     * @param newName the username of this User
+     * @param newPassword the password of this User
+     * @param newCreation the creation time of this User
+     * @param newAge the age of this User
+     * @param newFirstName the first name of this User
+     * @param newLastName the last name of this User
+     * @param newEmail the email of this User
+     * @param newPhoneNum the phone number of this User
+     * @param newBio the bio of this User
      */
-    public User(UUID id, String name, String password, Instant creation) {
-	this.id = id;
-	this.name = name;
-	this.password = password;
-	this.creation = creation;
+    public User(final UUID newId, final String newName, final String newPassword, final Instant newCreation, 
+	    final Integer newAge, final String newFirstName, final String newLastName, final String newEmail, 
+	    final String newPhoneNum, final String newBio) {
 	
-	/** Initializes other information for profile pages. */
-	this.Age = 0;
-	this.firstName = "First name";
-	this.lastName = "Last name";
-	this.email = "no-reply@example.com";
-	this.phoneNum = "123-456-7890";
-	this.bio = "Hello World!";
+	this.id = newId;
+	this.name = newName;
+	this.password = newPassword;
+	this.creation = newCreation;
+	this.age = newAge; //= 0;
+	this.firstName = newFirstName; // = "First name";
+	this.lastName = newLastName; // = "Last name";
+	this.email = newEmail; // = "no-reply@example.com";
+	this.phoneNum = newPhoneNum; // = "123-456-7890";
+	this.bio = newBio; //= "Hello World!";*/
     }
+    
+    public static class UserBuilder {
+	private UUID nestedId;
+	private String nestedName;
+	private String nestedPassword;
+	private Instant nestedCreation;
+	private Integer nestedAge;
+	private String nestedFirstName;
+	private String nestedLastName;
+	private String nestedEmail;
+	private String nestedPhoneNum;
+	private String nestedBio;
 
+	public UserBuilder(final UUID newId, final String newName, final String newPassword, final Instant newCreation) {
+	    this.nestedId = newId;
+	    this.nestedName = newName;
+	    this.nestedPassword = newPassword;
+	    this.nestedCreation = newCreation;
+	}
+	
+	public UserBuilder id(UUID newId) {
+	    this.nestedId = newId;
+	    return this;
+	}
+	
+	public UserBuilder name(String newName) {
+	    this.nestedName = newName;
+	    return this;
+	}
+	
+	public UserBuilder Password(String newPassword) {
+	    this.nestedPassword = newPassword;
+	    return this;
+	}
+	
+	public UserBuilder creation(Instant newCreation) {
+	    this.nestedCreation = newCreation;
+	    return this;
+	}
+	
+	public UserBuilder age(Integer newAge) {
+	    this.nestedAge = newAge;
+	    return this;
+	}
+	
+	public UserBuilder firstName(String newFirstName) {
+	    this.nestedFirstName = newFirstName;
+	    return this;
+	} 
+	
+	public UserBuilder lastName(String newLastName) {
+	    this.nestedLastName = newLastName;
+	    return this;
+	}
+	
+	public UserBuilder email(String newEmail) {
+	    this.nestedEmail = newEmail;
+	    return this;
+	}
+	
+	public UserBuilder phoneNum(String newPhoneNum) {
+	    this.nestedPhoneNum = newPhoneNum;
+	    return this;
+	}
+	
+	public UserBuilder bio(String newBio) {
+	    this.nestedBio = newBio;
+	    return this;
+	}
+	
+	public User createUser() {
+	    return new User(nestedId, nestedName, nestedPassword, nestedCreation, nestedAge, nestedFirstName, 
+		    nestedLastName, nestedEmail, nestedPhoneNum, nestedBio);
+	}
+    }
     /** Returns the ID of this User. */
     public UUID getId() {
 	return id;
@@ -79,7 +156,7 @@ public class User {
     
     /** Returns the age of this User. */
     public Integer getAge() {
-	return Age;
+	return age;
     }
     
     /** Returns the first name of this User. */
