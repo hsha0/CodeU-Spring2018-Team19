@@ -72,7 +72,7 @@ public class LoginServlet extends HttpServlet {
     if (userStore.isUserRegistered(username)) {
       //TODO: add password
       User user = userStore.getUser(username);
-      if(password != null && password.equals(user.getPassword())){
+      if(password.equals(user.getPassword())){
         request.getSession().setAttribute("user", username);
 	    response.sendRedirect("/conversations");
       }else{
