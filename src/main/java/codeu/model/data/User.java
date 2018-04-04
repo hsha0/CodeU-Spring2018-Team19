@@ -37,12 +37,6 @@ public class User {
      * @param newName the username of this User
      * @param newPassword the password of this User
      * @param newCreation the creation time of this User
-     * @param newAge the age of this User
-     * @param newFirstName the first name of this User
-     * @param newLastName the last name of this User
-     * @param newEmail the email of this User
-     * @param newPhoneNum the phone number of this User
-     * @param newBio the bio of this User
      */
     public User(UUID newId, String newName, String newPassword, Instant newCreation) {
 	
@@ -51,14 +45,45 @@ public class User {
 	this.password = newPassword;
 	this.creation = newCreation;
 	this.age = 0;
-	this.firstName = "First name";
-	this.lastName = "Last name";
-	this.email = "no-reply@example.com";
-	this.phoneNum = "123-456-7890";
-	this.bio = "Hello World!";
+	this.firstName = "";
+	this.lastName = "";
+	this.email = "";
+	this.phoneNum = "";
+	this.bio = "";
+    
     }
     
-    public static class UserBuilder {
+    /**
+     * Constructs a new User.
+     * 
+     * @param newId the ID of this User
+     * @param newName the username of this User
+     * @param newPassword the password of this User
+     * @param newCreation the creation time of this User
+     * @param newAge the age of this User
+     * @param newFirstName the first name of this User
+     * @param newLastName the last name of this User
+     * @param newEmail the email of this User
+     * @param newPhoneNum the phone number of this User
+     * @param newBio the bio of this User
+     */
+    private User(UUID newId, String newName, String newPassword, Instant newCreation, Integer newAge, String newFirstName,
+	    String newLastName, String newEmail, String newPhoneNum, String newBio) {
+	
+	this.id = newId;
+	this.name = newName;
+	this.password = newPassword;
+	this.creation = newCreation;
+	this.age = newAge;
+	this.firstName = newFirstName;
+	this.lastName = newLastName;
+	this.email = newEmail;
+	this.phoneNum = newPhoneNum;
+	this.bio = newBio;
+	
+    }
+    
+    public static class Builder {
 	private UUID nestedId;
 	private String nestedName;
 	private String nestedPassword;
@@ -70,65 +95,66 @@ public class User {
 	private String nestedPhoneNum;
 	private String nestedBio;
 
-	public UserBuilder(final UUID newId, final String newName, final String newPassword, final Instant newCreation) {
+	public Builder(final UUID newId, final String newName, final String newPassword, final Instant newCreation) {
 	    this.nestedId = newId;
 	    this.nestedName = newName;
 	    this.nestedPassword = newPassword;
 	    this.nestedCreation = newCreation;
 	}
 	
-	public UserBuilder id(UUID newId) {
+	public Builder setId(UUID newId) {
 	    this.nestedId = newId;
 	    return this;
 	}
 	
-	public UserBuilder name(String newName) {
+	public Builder setName(String newName) {
 	    this.nestedName = newName;
 	    return this;
 	}
 	
-	public UserBuilder Password(String newPassword) {
+	public Builder setPassword(String newPassword) {
 	    this.nestedPassword = newPassword;
 	    return this;
 	}
 	
-	public UserBuilder creation(Instant newCreation) {
+	public Builder setCreation(Instant newCreation) {
 	    this.nestedCreation = newCreation;
 	    return this;
 	}
 	
-	public UserBuilder age(Integer newAge) {
+	public Builder setAge(Integer newAge) {
 	    this.nestedAge = newAge;
 	    return this;
 	}
 	
-	public UserBuilder firstName(String newFirstName) {
+	public Builder setFirstName(String newFirstName) {
 	    this.nestedFirstName = newFirstName;
 	    return this;
 	} 
 	
-	public UserBuilder lastName(String newLastName) {
+	public Builder setLastName(String newLastName) {
 	    this.nestedLastName = newLastName;
 	    return this;
 	}
 	
-	public UserBuilder email(String newEmail) {
+	public Builder setEmail(String newEmail) {
 	    this.nestedEmail = newEmail;
 	    return this;
 	}
 	
-	public UserBuilder phoneNum(String newPhoneNum) {
+	public Builder setPhoneNum(String newPhoneNum) {
 	    this.nestedPhoneNum = newPhoneNum;
 	    return this;
 	}
 	
-	public UserBuilder bio(String newBio) {
+	public Builder setBio(String newBio) {
 	    this.nestedBio = newBio;
 	    return this;
 	}
 	
 	public User createUser() {
-	    return new User(nestedId, nestedName, nestedPassword, nestedCreation);
+	    return new User(nestedId, nestedName, nestedPassword, nestedCreation, nestedAge, nestedFirstName, nestedLastName,
+		    nestedEmail, nestedPhoneNum, nestedBio);
 	}
     }
     /** Returns the ID of this User. */
