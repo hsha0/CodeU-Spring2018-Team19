@@ -44,20 +44,18 @@ public class User {
      * @param newPhoneNum the phone number of this User
      * @param newBio the bio of this User
      */
-    public User(final UUID newId, final String newName, final String newPassword, final Instant newCreation, 
-	    final Integer newAge, final String newFirstName, final String newLastName, final String newEmail, 
-	    final String newPhoneNum, final String newBio) {
+    public User(UUID newId, String newName, String newPassword, Instant newCreation) {
 	
 	this.id = newId;
 	this.name = newName;
 	this.password = newPassword;
 	this.creation = newCreation;
-	this.age = newAge; //= 0;
-	this.firstName = newFirstName; // = "First name";
-	this.lastName = newLastName; // = "Last name";
-	this.email = newEmail; // = "no-reply@example.com";
-	this.phoneNum = newPhoneNum; // = "123-456-7890";
-	this.bio = newBio; //= "Hello World!";*/
+	this.age = 0;
+	this.firstName = "First name";
+	this.lastName = "Last name";
+	this.email = "no-reply@example.com";
+	this.phoneNum = "123-456-7890";
+	this.bio = "Hello World!";
     }
     
     public static class UserBuilder {
@@ -130,8 +128,7 @@ public class User {
 	}
 	
 	public User createUser() {
-	    return new User(nestedId, nestedName, nestedPassword, nestedCreation, nestedAge, nestedFirstName, 
-		    nestedLastName, nestedEmail, nestedPhoneNum, nestedBio);
+	    return new User(nestedId, nestedName, nestedPassword, nestedCreation);
 	}
     }
     /** Returns the ID of this User. */
