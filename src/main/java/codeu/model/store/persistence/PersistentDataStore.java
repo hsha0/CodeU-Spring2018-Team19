@@ -80,7 +80,7 @@ public class PersistentDataStore {
   }
 
   /**
-   * Loads unique User object from the Datastore service and returns it.
+   * Loads unique User object using UUID from the Datastore service and returns it.
    *
    * @throws PersistentDataStoreException if an error was detected during the load from the
    *     Datastore service
@@ -107,6 +107,36 @@ public class PersistentDataStore {
               // database entity definition mismatches, or service mismatches.
               throw new PersistentDataStoreException(e);
           }
+  }
+
+  /**
+   * Loads unique User object using username from the Datastore service and returns it.
+   *
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public User loadUser(String name) throws PersistentDataStoreException {
+
+    // Retrieve all users where uuid matches given UUID
+    Query query = new Query("chat-users");
+    query.setFilter(new Query.FilterPredicate("username", Query.FilterOperator.EQUAL, name));
+    PreparedQuery results = datastore.prepare(query);
+
+    //There should only be one user for each UUID
+    Entity entity = results.asSingleEntity();
+    try {
+      UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
+      String userName = (String) entity.getProperty("username");
+      String password = (String)entity.getProperty("password");
+      Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+      User user = new User(uuid, userName, password, creationTime);
+      return user;
+    } catch (Exception e) {
+      // In a production environment, errors should be very rare. Errors which may
+      // occur include network errors, Datastore service errors, authorization errors,
+      // database entity definition mismatches, or service mismatches.
+      throw new PersistentDataStoreException(e);
+    }
   }
 
   /**
