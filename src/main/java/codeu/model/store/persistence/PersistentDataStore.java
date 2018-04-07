@@ -80,6 +80,36 @@ public class PersistentDataStore {
   }
 
   /**
+   * Loads unique User object from the Datastore service and returns it.
+   *
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public User loadUser(UUID id) throws PersistentDataStoreException {
+
+    // Retrieve all users where uuid matches given UUID
+    Query query = new Query("chat-users");
+    query.setFilter(new Query.FilterPredicate("uuid", Query.FilterOperator.EQUAL, id.toString()));
+    PreparedQuery results = datastore.prepare(query);
+
+    //There should only be one user for each UUID
+    Entity entity = results.asSingleEntity();
+          try {
+              UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
+              String userName = (String) entity.getProperty("username");
+              String password = (String)entity.getProperty("password");
+              Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+              User user = new User(uuid, userName, password, creationTime);
+              return user;
+          } catch (Exception e) {
+              // In a production environment, errors should be very rare. Errors which may
+              // occur include network errors, Datastore service errors, authorization errors,
+              // database entity definition mismatches, or service mismatches.
+              throw new PersistentDataStoreException(e);
+          }
+  }
+
+  /**
    * Loads all Conversation objects from the Datastore service and returns them in a List.
    *
    * @throws PersistentDataStoreException if an error was detected during the load from the

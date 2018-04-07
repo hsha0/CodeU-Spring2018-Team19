@@ -70,6 +70,38 @@ public class PersistentDataStoreTest {
   }
 
   @Test
+  public void testSaveAndLoadSingleUser() throws PersistentDataStoreException {
+    UUID idOne = UUID.randomUUID();
+    String nameOne = "test_username_one";
+    Instant creationOne = Instant.ofEpochMilli(1000);
+    User inputUserOne = new User(idOne, nameOne, "test_password", creationOne);
+
+    UUID idTwo = UUID.randomUUID();
+    String nameTwo = "test_username_two";
+    Instant creationTwo = Instant.ofEpochMilli(2000);
+    User inputUserTwo = new User(idTwo, nameTwo, "test_password", creationTwo);
+
+    // save
+    persistentDataStore.writeThrough(inputUserOne);
+    persistentDataStore.writeThrough(inputUserTwo);
+
+    // load
+    User resultUserOne = persistentDataStore.loadUser(idOne);
+    User resultUserTwo = persistentDataStore.loadUser(idTwo);
+
+    // confirm that what we saved matches what we loaded
+    Assert.assertEquals(idOne, resultUserOne.getId());
+    Assert.assertEquals(nameOne, resultUserOne.getName());
+    Assert.assertEquals("test_password", resultUserOne.getPassword());
+    Assert.assertEquals(creationOne, resultUserOne.getCreationTime());
+
+    Assert.assertEquals(idTwo, resultUserTwo.getId());
+    Assert.assertEquals(nameTwo, resultUserTwo.getName());
+    Assert.assertEquals("test_password", resultUserTwo.getPassword());
+    Assert.assertEquals(creationTwo, resultUserTwo.getCreationTime());
+  }
+
+  @Test
   public void testSaveAndLoadConversations() throws PersistentDataStoreException {
     UUID idOne = UUID.randomUUID();
     UUID ownerOne = UUID.randomUUID();
