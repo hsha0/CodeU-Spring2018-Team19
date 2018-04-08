@@ -19,45 +19,191 @@ import java.util.UUID;
 
 /** Class representing a registered user. */
 public class User {
-  private final UUID id;
-  private final String name;
-  private final String password;
-  private final Instant creation;
+    private final UUID id;
+    private final String name;
+    private final String password;
+    private final Instant creation;
+    private final Integer age;
+    private final String firstName;
+    private final String lastName;
+    private final String email;
+    private final String phoneNum;
+    private final String bio;
 
-  /**
-   * Constructs a new User.
-   *
-   * @param id the ID of this User
-   * @param name the username of this User
-   * @param password the password of this User
-   * @param creation the creation time of this User
-   */
-  public User(UUID id, String name, String password, Instant creation) {
-     this.id = id;
-     this.name = name;
-     this.password = password;
-     this.creation = creation;
-  }
+    /**
+     * Constructs a new User.
+     *
+     * @param newId the ID of this User
+     * @param newName the username of this User
+     * @param newPassword the password of this User
+     * @param newCreation the creation time of this User
+     */
+    public User(UUID newId, String newName, String newPassword, Instant newCreation) {
+	
+	this.id = newId;
+	this.name = newName;
+	this.password = newPassword;
+	this.creation = newCreation;
+	this.age = 0;
+	this.firstName = "";
+	this.lastName = "";
+	this.email = "";
+	this.phoneNum = "";
+	this.bio = "";
+    
+    }
+    
+    /**
+     * Constructs a new User.
+     * 
+     * @param newId the ID of this User
+     * @param newName the username of this User
+     * @param newPassword the password of this User
+     * @param newCreation the creation time of this User
+     * @param newAge the age of this User
+     * @param newFirstName the first name of this User
+     * @param newLastName the last name of this User
+     * @param newEmail the email of this User
+     * @param newPhoneNum the phone number of this User
+     * @param newBio the bio of this User
+     */
+    private User(UUID newId, String newName, String newPassword, Instant newCreation, Integer newAge, String newFirstName,
+	    String newLastName, String newEmail, String newPhoneNum, String newBio) {
+	
+	this.id = newId;
+	this.name = newName;
+	this.password = newPassword;
+	this.creation = newCreation;
+	this.age = newAge;
+	this.firstName = newFirstName;
+	this.lastName = newLastName;
+	this.email = newEmail;
+	this.phoneNum = newPhoneNum;
+	this.bio = newBio;
+	
+    }
+    
+    public static class Builder {
+	private UUID nestedId;
+	private String nestedName;
+	private String nestedPassword;
+	private Instant nestedCreation;
+	private Integer nestedAge;
+	private String nestedFirstName;
+	private String nestedLastName;
+	private String nestedEmail;
+	private String nestedPhoneNum;
+	private String nestedBio;
 
-  /** Returns the ID of this User. */
-  public UUID getId() {
-    return id;
-  }
+	public Builder(final UUID newId, final String newName, final String newPassword, final Instant newCreation) {
+	    this.nestedId = newId;
+	    this.nestedName = newName;
+	    this.nestedPassword = newPassword;
+	    this.nestedCreation = newCreation;
+	}
+	
+	public Builder setId(UUID newId) {
+	    this.nestedId = newId;
+	    return this;
+	}
+	
+	public Builder setName(String newName) {
+	    this.nestedName = newName;
+	    return this;
+	}
+	
+	public Builder setPassword(String newPassword) {
+	    this.nestedPassword = newPassword;
+	    return this;
+	}
+	
+	public Builder setCreation(Instant newCreation) {
+	    this.nestedCreation = newCreation;
+	    return this;
+	}
+	
+	public Builder setAge(Integer newAge) {
+	    this.nestedAge = newAge;
+	    return this;
+	}
+	
+	public Builder setFirstName(String newFirstName) {
+	    this.nestedFirstName = newFirstName;
+	    return this;
+	} 
+	
+	public Builder setLastName(String newLastName) {
+	    this.nestedLastName = newLastName;
+	    return this;
+	}
+	
+	public Builder setEmail(String newEmail) {
+	    this.nestedEmail = newEmail;
+	    return this;
+	}
+	
+	public Builder setPhoneNum(String newPhoneNum) {
+	    this.nestedPhoneNum = newPhoneNum;
+	    return this;
+	}
+	
+	public Builder setBio(String newBio) {
+	    this.nestedBio = newBio;
+	    return this;
+	}
+	
+	public User createUser() {
+	    return new User(nestedId, nestedName, nestedPassword, nestedCreation, nestedAge, nestedFirstName, nestedLastName,
+		    nestedEmail, nestedPhoneNum, nestedBio);
+	}
+    }
+    /** Returns the ID of this User. */
+    public UUID getId() {
+	return id;
+    }
 
-  /** Returns the username of this User. */
-  public String getName() {
-    return name;
-  }
+    /** Returns the username of this User. */
+    public String getName() {
+	return name;
+    }
 
-  /**
-   * Returns the password of this User.
-   */
-  public String getPassword() {
-    return password;
-  }
+    /** Returns the password of this User. */
+    public String getPassword() {
+	return password;
+    }
 
-  /** Returns the creation time of this User. */
-  public Instant getCreationTime() {
-    return creation;
-  }
+    /** Returns the creation time of this User. */
+    public Instant getCreationTime() {
+	return creation;
+    }
+    
+    /** Returns the age of this User. */
+    public Integer getAge() {
+	return age;
+    }
+    
+    /** Returns the first name of this User. */
+    public String getFirstName() {
+	return firstName;
+    }
+
+    /** Returns the last name of this User. */
+    public String getLastName() {
+	return lastName;
+    }
+
+    /** Returns the email of this User. */
+    public String getEmail() {
+	return email;
+    }
+
+    /** Returns the phone number of this User. */
+    public String getPhoneNum() {
+	return phoneNum;
+    }
+    
+    /** Returns the bio of this User. */
+    public String getBio() {
+	return bio;
+    }
 }
