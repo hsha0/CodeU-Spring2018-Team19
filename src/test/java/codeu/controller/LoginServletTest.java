@@ -18,6 +18,7 @@ import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
 import org.junit.Before;
 import org.junit.Test;
+import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mockito;
 
 import javax.servlet.RequestDispatcher;
@@ -72,14 +73,13 @@ public class LoginServletTest {
 
   }
 
-  @Test
+  @Test //failing
   public void testDoPost_ExistingUser_PasswordMatch() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
     Mockito.when(mockRequest.getParameter("password")).thenReturn("test password");
-
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
-    User user = new User(UUID.randomUUID(), "test username", "test password", Instant.EPOCH);
+    User user = new User(UUID.randomUUID(), "test username", BCrypt.hashpw("test password", BCrypt.gensalt()), Instant.EPOCH);
     Mockito.when(mockUserStore.getUser("test username")).thenReturn(user);
 
     loginServlet.setUserStore(mockUserStore);
@@ -95,14 +95,14 @@ public class LoginServletTest {
     Mockito.verify(mockResponse).sendRedirect("/conversations");
   }
 
-  @Test
+  @Test //failing
   public void testDoPost_ExistingUser_PasswordNotMatch() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
-    Mockito.when(mockRequest.getParameter("password")).thenReturn("test password");
+    Mockito.when(mockRequest.getParameter("password")).thenReturn(BCrypt.hashpw("test password", BCrypt.gensalt()));
 
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
-    User user = new User(UUID.randomUUID(), "test username", "wrong password", Instant.EPOCH);
+    User user = new User(UUID.randomUUID(), "test username", BCrypt.hashpw("test password", BCrypt.gensalt()), Instant.EPOCH);
     Mockito.when(mockUserStore.getUser("test username")).thenReturn(user);
 
     loginServlet.setUserStore(mockUserStore);
