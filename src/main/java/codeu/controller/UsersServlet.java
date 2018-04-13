@@ -16,27 +16,45 @@ public class UsersServlet extends HttpServlet {
   private UserStore userStore;
 
   /**
-     * This function fires when a user requests the /users URL. It simply forwards
-     * the request to users.jsp.
-     */
+   * Set up state for handling users-related requests. This method is only called
+   * when running in a server, not when running in a test.
+   */
+  @Override
+  public void init() throws ServletException {
+    super.init();
+    setUserStore(UserStore.getInstance());
+  }
+
+  /**
+   * Sets the UserStore used by this servlet. This function provides a common
+   * setup method for use by the test framework or the servlet's init() function.
+   */
+  void setUserStore(UserStore userStore) {
+    this.userStore = userStore;
+  }
+
+  /**
+   * This function fires when a user requests the /users URL. It simply forwards
+   * the request to users.jsp.
+   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-	String username = (String) request.getSession().getAttribute("user");
-	if (username == null) {
+    String username = (String) request.getSession().getAttribute("user");
+    if (username == null) {
       // user is not logged in, don't let them go to profile page
       response.sendRedirect("/login");
       return;
     }
-	
-	User user = userStore.getUser(username);
+
+    User user = userStore.getUser(username);
     if (user == null) {
       // user was not found, don't let them go to profile page
       response.sendRedirect("/login");
       return;
     }
-    
+
     request.setAttribute("user", user);
-	request.getRequestDispatcher("/WEB-INF/view/users.jsp").forward(request, response);
-  
+    request.getRequestDispatcher("/WEB-INF/view/users.jsp").forward(request, response);
+
   }
 }
