@@ -19,6 +19,7 @@ import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 /**
  * Store class that uses in-memory data structures to hold values and automatically loads from and
@@ -75,7 +76,7 @@ public class UserStore {
    * @return null if username does not match any existing User.
    */
   public User getUser(String username) {
-    User user = instance.getUser(username);
+    User user = getInstance().getUser(username);
     return user;
   }
 
@@ -85,7 +86,7 @@ public class UserStore {
    * @return null if the UUID does not match any existing User.
    */
   public User getUser(UUID id) {
-    User user = instance.getUser(id);
+    User user = getInstance().getUser(id);
     return user;
   }
 
@@ -96,7 +97,7 @@ public class UserStore {
 
   /** Return true if the given username is known to the application. */
   public boolean isUserRegistered(String username) {
-    User user = instance.getUser(username);
+    User user = getInstance().getUser(username);
     if(user != null){
       return true;
     }
@@ -110,7 +111,7 @@ public class UserStore {
    */
   public void setUsers(List<User> users) {
     for (User user: users) {
-      instance.addUser(user);
+      getInstance().addUser(user);
     }
   }
 }
