@@ -15,39 +15,39 @@ import org.mockito.ArgumentCaptor;
 
 public class RegisterServletTest {
 
-    private RegisterServlet registerServlet;
-    private HttpServletRequest mockRequest;
-    private HttpServletResponse mockResponse;
-    private RequestDispatcher mockRequestDispatcher;
+  private RegisterServlet registerServlet;
+  private HttpServletRequest mockRequest;
+  private HttpServletResponse mockResponse;
+  private RequestDispatcher mockRequestDispatcher;
 
-    @Before
-    public void setup() {
+  @Before
+  public void setup() {
 	registerServlet = new RegisterServlet();
 	mockRequest = Mockito.mock(HttpServletRequest.class);
 	mockResponse = Mockito.mock(HttpServletResponse.class);
 	mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
 	Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/register.jsp")).thenReturn(mockRequestDispatcher);
-    }
+  }
 
-    @Test
-    public void testDoGet() throws IOException, ServletException {
+  @Test
+  public void testDoGet() throws IOException, ServletException {
 	registerServlet.doGet(mockRequest, mockResponse);
 
 	Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
-    }
+  }
 
-    @Test
-    public void testDoPost_BasUsername() throws IOException, ServletException {
+  @Test
+  public void testDoPost_BasUsername() throws IOException, ServletException {
 	Mockito.when(mockRequest.getParameter("username")).thenReturn("bad !@#$% username");
 
 	registerServlet.doPost(mockRequest, mockResponse);
 
 	Mockito.verify(mockRequest).setAttribute("error", "Please enter only letters, numbers, and spaces.");
 	Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
-    }
+  }
 
-    @Test
-    public void testDoPost_NewUser() throws IOException, ServletException {
+  @Test
+  public void testDoPost_NewUser() throws IOException, ServletException {
 	Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
 
 	UserStore mockUserStore = Mockito.mock(UserStore.class);
@@ -62,10 +62,10 @@ public class RegisterServletTest {
 	Assert.assertEquals(userArgumentCaptor.getValue().getName(), "test username");
 
 	Mockito.verify(mockResponse).sendRedirect("/login");
-    }
+  }
 
-    @Test
-    public void testDoPost_ExistingUser() throws IOException, ServletException {
+  @Test
+  public void testDoPost_ExistingUser() throws IOException, ServletException {
 	Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
 
 	UserStore mockUserStore = Mockito.mock(UserStore.class);
@@ -76,5 +76,5 @@ public class RegisterServletTest {
 
 	Mockito.verify(mockRequest).setAttribute("error", "That username is already taken.");
 	Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
-    }
+  }
 }

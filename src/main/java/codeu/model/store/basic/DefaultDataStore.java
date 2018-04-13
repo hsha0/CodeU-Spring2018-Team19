@@ -35,110 +35,109 @@ import java.util.UUID;
  */
 public class DefaultDataStore {
 
-    /** Set this to true to use generated default data. */
-    private boolean USE_DEFAULT_DATA = true;
+  /** Set this to true to use generated default data. */
+  private boolean USE_DEFAULT_DATA = true;
 
-    /**
-     * Default user count. Only used if USE_DEFAULT_DATA is true. Make sure this is
-     * <= the number of names in the getRandomUsernames() function.
-     */
-    private int DEFAULT_USER_COUNT = 20;
+  /**
+   * Default user count. Only used if USE_DEFAULT_DATA is true. Make sure this is
+   * <= the number of names in the getRandomUsernames() function.
+   */
+  private int DEFAULT_USER_COUNT = 20;
 
-    /**
-     * Default conversation count. Only used if USE_DEFAULT_DATA is true. Each
-     * conversation is assigned a random user as its author.
-     */
-    private int DEFAULT_CONVERSATION_COUNT = 10;
+  /**
+   * Default conversation count. Only used if USE_DEFAULT_DATA is true. Each
+   * conversation is assigned a random user as its author.
+   */
+  private int DEFAULT_CONVERSATION_COUNT = 10;
 
-    /**
-     * Default message count. Only used if USE_DEFAULT_DATA is true. Each message is
-     * assigned a random author and conversation.
-     */
-    private int DEFAULT_MESSAGE_COUNT = 100;
+  /**
+   * Default message count. Only used if USE_DEFAULT_DATA is true. Each message is
+   * assigned a random author and conversation.
+   */
+  private int DEFAULT_MESSAGE_COUNT = 100;
 
-    private static DefaultDataStore instance = new DefaultDataStore();
+  private static DefaultDataStore instance = new DefaultDataStore();
 
-    public static DefaultDataStore getInstance() {
+  public static DefaultDataStore getInstance() {
 	return instance;
-    }
+  }
 
-    private List<User> users;
-    private List<Conversation> conversations;
-    private List<Message> messages;
+  private List<User> users;
+  private List<Conversation> conversations;
+  private List<Message> messages;
 
-    /**
-     * This class is a singleton, so its constructor is private. Call getInstance()
-     * instead.
-     */
-    private DefaultDataStore() {
+  /**
+   * This class is a singleton, so its constructor is private. Call getInstance()
+   * instead.
+   */
+  private DefaultDataStore() {
 	users = new ArrayList<>();
 	conversations = new ArrayList<>();
 	messages = new ArrayList<>();
 
 	if (USE_DEFAULT_DATA) {
-	    addRandomUsers();
-	    addRandomConversations();
-	    addRandomMessages();
+	  addRandomUsers();
+	  addRandomConversations();
+	  addRandomMessages();
 	}
-    }
+  }
 
-    public boolean isValid() {
+  public boolean isValid() {
 	return true;
-    }
+  }
 
-    public List<User> getAllUsers() {
+  public List<User> getAllUsers() {
 	return users;
-    }
+  }
 
-    public List<Conversation> getAllConversations() {
+  public List<Conversation> getAllConversations() {
 	return conversations;
-    }
+  }
 
-    public List<Message> getAllMessages() {
+  public List<Message> getAllMessages() {
 	return messages;
-    }
+  }
 
-    private void addRandomUsers() {
+  private void addRandomUsers() {
 
 	List<String> randomUsernames = getRandomUsernames();
 	Collections.shuffle(randomUsernames);
 
 	for (int i = 0; i < DEFAULT_USER_COUNT; i++) {
-	    User user = new User(UUID.randomUUID(), randomUsernames.get(i), BCrypt.hashpw("password", BCrypt.gensalt()),
-		    Instant.now());
-	    PersistentStorageAgent.getInstance().writeThrough(user);
-	    users.add(user);
+	  User user = new User(UUID.randomUUID(), randomUsernames.get(i), BCrypt.hashpw("password", BCrypt.gensalt()),
+		  Instant.now());
+	  PersistentStorageAgent.getInstance().writeThrough(user);
+	  users.add(user);
 	}
-    }
+  }
 
-    private void addRandomConversations() {
+  private void addRandomConversations() {
 	for (int i = 1; i <= DEFAULT_CONVERSATION_COUNT; i++) {
-	    User user = getRandomElement(users);
-	    String title = "Conversation_" + i;
-	    Conversation conversation = new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now());
-	    PersistentStorageAgent.getInstance().writeThrough(conversation);
-	    conversations.add(conversation);
+	  User user = getRandomElement(users);
+	  String title = "Conversation_" + i;
+	  Conversation conversation = new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now());
+	  PersistentStorageAgent.getInstance().writeThrough(conversation);
+	  conversations.add(conversation);
 	}
-    }
+  }
 
-    private void addRandomMessages() {
+  private void addRandomMessages() {
 	for (int i = 0; i < DEFAULT_MESSAGE_COUNT; i++) {
-	    Conversation conversation = getRandomElement(conversations);
-	    User author = getRandomElement(users);
-	    String content = getRandomMessageContent();
+	  Conversation conversation = getRandomElement(conversations);
+	  User author = getRandomElement(users);
+	  String content = getRandomMessageContent();
 
-	    Message message = new Message(UUID.randomUUID(), conversation.getId(), author.getId(), content,
-		    Instant.now());
-	    PersistentStorageAgent.getInstance().writeThrough(message);
-	    messages.add(message);
+	  Message message = new Message(UUID.randomUUID(), conversation.getId(), author.getId(), content, Instant.now());
+	  PersistentStorageAgent.getInstance().writeThrough(message);
+	  messages.add(message);
 	}
-    }
+  }
 
-    private <E> E getRandomElement(List<E> list) {
+  private <E> E getRandomElement(List<E> list) {
 	return list.get((int) (Math.random() * list.size()));
-    }
+  }
 
-    private List<String> getRandomUsernames() {
+  private List<String> getRandomUsernames() {
 	List<String> randomUsernames = new ArrayList<>();
 	randomUsernames.add("Grace");
 	randomUsernames.add("Ada");
@@ -171,9 +170,9 @@ public class DefaultDataStore {
 	randomUsernames.add("Mary");
 	randomUsernames.add("Karen");
 	return randomUsernames;
-    }
+  }
 
-    private String getRandomMessageContent() {
+  private String getRandomMessageContent() {
 	String loremIpsum = "dolorem ipsum, quia dolor sit amet consectetur adipiscing velit, "
 		+ "sed quia non numquam do eius modi tempora incididunt, ut labore et dolore magnam "
 		+ "aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam "
@@ -186,5 +185,5 @@ public class DefaultDataStore {
 	String messageContent = loremIpsum.substring(startIndex, endIndex).trim();
 
 	return messageContent;
-    }
+  }
 }
