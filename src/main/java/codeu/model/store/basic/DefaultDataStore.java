@@ -18,6 +18,8 @@ import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,10 +27,11 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * This class makes it easy to add dummy data to your chat app instance. To use fake data, set
- * USE_DEFAULT_DATA to true, then adjust the COUNT variables to generate the corresponding amount of
- * users, conversations, and messages. Note that the data must be consistent, i.e. if a Message has
- * an author, that author must be a member of the Users list.
+ * This class makes it easy to add dummy data to your chat app instance. To use
+ * fake data, set USE_DEFAULT_DATA to true, then adjust the COUNT variables to
+ * generate the corresponding amount of users, conversations, and messages. Note
+ * that the data must be consistent, i.e. if a Message has an author, that
+ * author must be a member of the Users list.
  */
 public class DefaultDataStore {
 
@@ -36,20 +39,20 @@ public class DefaultDataStore {
   private boolean USE_DEFAULT_DATA = true;
 
   /**
-   * Default user count. Only used if USE_DEFAULT_DATA is true. Make sure this is <= the number of
-   * names in the getRandomUsernames() function.
+   * Default user count. Only used if USE_DEFAULT_DATA is true. Make sure this is
+   * <= the number of names in the getRandomUsernames() function.
    */
   private int DEFAULT_USER_COUNT = 20;
 
   /**
-   * Default conversation count. Only used if USE_DEFAULT_DATA is true. Each conversation is
-   * assigned a random user as its author.
+   * Default conversation count. Only used if USE_DEFAULT_DATA is true. Each
+   * conversation is assigned a random user as its author.
    */
   private int DEFAULT_CONVERSATION_COUNT = 10;
 
   /**
-   * Default message count. Only used if USE_DEFAULT_DATA is true. Each message is assigned a random
-   * author and conversation.
+   * Default message count. Only used if USE_DEFAULT_DATA is true. Each message is
+   * assigned a random author and conversation.
    */
   private int DEFAULT_MESSAGE_COUNT = 100;
 
@@ -63,8 +66,10 @@ public class DefaultDataStore {
   private List<Conversation> conversations;
   private List<Message> messages;
 
-
-  /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
+  /**
+   * This class is a singleton, so its constructor is private. Call getInstance()
+   * instead.
+   */
   private DefaultDataStore() {
     users = new ArrayList<>();
     conversations = new ArrayList<>();
@@ -99,7 +104,8 @@ public class DefaultDataStore {
     Collections.shuffle(randomUsernames);
 
     for (int i = 0; i < DEFAULT_USER_COUNT; i++) {
-      User user = new User(UUID.randomUUID(), randomUsernames.get(i), "password", Instant.now());
+      User user = new User(UUID.randomUUID(), randomUsernames.get(i), BCrypt.hashpw("password", BCrypt.gensalt()),
+          Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(user);
       users.add(user);
     }
@@ -109,8 +115,7 @@ public class DefaultDataStore {
     for (int i = 1; i <= DEFAULT_CONVERSATION_COUNT; i++) {
       User user = getRandomElement(users);
       String title = "Conversation_" + i;
-      Conversation conversation =
-          new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now());
+      Conversation conversation = new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(conversation);
       conversations.add(conversation);
     }
@@ -122,9 +127,7 @@ public class DefaultDataStore {
       User author = getRandomElement(users);
       String content = getRandomMessageContent();
 
-      Message message =
-          new Message(
-              UUID.randomUUID(), conversation.getId(), author.getId(), content, Instant.now());
+      Message message = new Message(UUID.randomUUID(), conversation.getId(), author.getId(), content, Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(message);
       messages.add(message);
     }
@@ -170,13 +173,12 @@ public class DefaultDataStore {
   }
 
   private String getRandomMessageContent() {
-    String loremIpsum =
-        "dolorem ipsum, quia dolor sit amet consectetur adipiscing velit, "
-            + "sed quia non numquam do eius modi tempora incididunt, ut labore et dolore magnam "
-            + "aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam "
-            + "corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum "
-            + "iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, "
-            + "qui dolorem eum fugiat, quo voluptas nulla pariatur";
+    String loremIpsum = "dolorem ipsum, quia dolor sit amet consectetur adipiscing velit, "
+        + "sed quia non numquam do eius modi tempora incididunt, ut labore et dolore magnam "
+        + "aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam "
+        + "corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum "
+        + "iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, "
+        + "qui dolorem eum fugiat, quo voluptas nulla pariatur";
 
     int startIndex = (int) (Math.random() * (loremIpsum.length() - 100));
     int endIndex = (int) (startIndex + 10 + Math.random() * 90);
