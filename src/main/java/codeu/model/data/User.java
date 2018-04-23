@@ -29,6 +29,7 @@ public class User {
     private final String email;
     private final String phoneNum;
     private final String bio;
+		private final String pictureURL;
 
     /**
      * Constructs a new User.
@@ -50,6 +51,7 @@ public class User {
 	this.email = "";
 	this.phoneNum = "";
 	this.bio = "";
+	this.pictureURL= "";
     
     }
     
@@ -66,9 +68,10 @@ public class User {
      * @param newEmail the email of this User
      * @param newPhoneNum the phone number of this User
      * @param newBio the bio of this User
+		 * @param newPictureURL the URL of the profile picture of this User
      */
     private User(UUID newId, String newName, String newPassword, Instant newCreation, Integer newAge, String newFirstName,
-	    String newLastName, String newEmail, String newPhoneNum, String newBio) {
+	    String newLastName, String newEmail, String newPhoneNum, String newBio, String newPictureURL) {
 	
 	this.id = newId;
 	this.name = newName;
@@ -80,6 +83,7 @@ public class User {
 	this.email = newEmail;
 	this.phoneNum = newPhoneNum;
 	this.bio = newBio;
+	this.pictureURL = newPictureURL;
 	
     }
     
@@ -94,6 +98,7 @@ public class User {
 	private String nestedEmail;
 	private String nestedPhoneNum;
 	private String nestedBio;
+	private String nestedPictureURL;
 
 	public Builder(final UUID newId, final String newName, final String newPassword, final Instant newCreation) {
 	    this.nestedId = newId;
@@ -141,7 +146,7 @@ public class User {
 	    this.nestedEmail = newEmail;
 	    return this;
 	}
-	
+
 	public Builder setPhoneNum(String newPhoneNum) {
 	    this.nestedPhoneNum = newPhoneNum;
 	    return this;
@@ -151,10 +156,15 @@ public class User {
 	    this.nestedBio = newBio;
 	    return this;
 	}
+
+	public Builder setPictureURL(String newPictureURL){
+		this.nestedPictureURL = newPictureURL;
+		return this;
+	}
 	
 	public User createUser() {
 	    return new User(nestedId, nestedName, nestedPassword, nestedCreation, nestedAge, nestedFirstName, nestedLastName,
-		    nestedEmail, nestedPhoneNum, nestedBio);
+		    nestedEmail, nestedPhoneNum, nestedBio, nestedPictureURL);
 	}
     }
     /** Returns the ID of this User. */
@@ -206,4 +216,9 @@ public class User {
     public String getBio() {
 	return bio;
     }
+
+		/** Returns the URL of the profile picture of this User. */
+		public String getPictureURL() {
+			return pictureURL;
+		}
 }

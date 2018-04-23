@@ -36,7 +36,33 @@ public class UsersServlet extends HttpServlet {
     }
     
     request.setAttribute("user", user);
-	request.getRequestDispatcher("/WEB-INF/view/users.jsp").forward(request, response);
+	  request.getRequestDispatcher("/WEB-INF/view/users.jsp").forward(request, response);
   
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    String username = (String) request.getSession().getAttribute("user");
+    String pictureURL = (String) request.getSession().getAttribute("pictureurl");
+    String bio = (String) request.getSession().getAttribute("bio");
+    Integer age = (Integer) request.getSession().getAttribute("age");
+    String email = (String) request.getSession().getAttribute("email");
+    String phoneNum = (String) request.getSession().getAttribute("phone");
+
+    User user = userStore.getUser(username);
+    if(username == null) {
+      response.sendRedirect("/login");
+      return;
+    }
+    User.Builder userBuilder = new User.Builder(user.getId(),user.getName(), user.getPassword(), user.getCreationTime());
+    userBuilder.setAge(age);
+    userBuilder.setFirstName(user.getFirstName());
+    userBuilder.setLastName(user.getLastName());
+    userBuilder.setEmail(email);
+    userBuilder.setPhoneNum(phoneNum);
+    userBuilder.setBio(bio);
+    userBuilder.setPictureURL(pictureURL);
+    user = userBuilder.createUser();
+    userStore.updateUser(user);
   }
 }
