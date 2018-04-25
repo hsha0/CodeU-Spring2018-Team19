@@ -140,6 +140,7 @@ public class ChatServlet extends HttpServlet {
 
     String messageContent = request.getParameter("message");
 
+    // TO DO: update with call to markdown utils
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
 
