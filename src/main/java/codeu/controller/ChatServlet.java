@@ -45,7 +45,7 @@ public class ChatServlet extends HttpServlet {
   /** Store class that gives access to Users. */
   private UserStore userStore;
 
-  private MarkdownUtils mdu;
+  //private MarkdownUtils mdu;
 
   /** Set up state for handling chat requests. */
   @Override
@@ -144,10 +144,9 @@ public class ChatServlet extends HttpServlet {
 
     String messageContent = request.getParameter("message");
 
-    // TO DO: update with call to markdown utils
-    //String mark_down_message = mdu.mark_down(messageContent);
-    // this removes any HTML from the message content
-    String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
+    String mark_down_message = MarkdownUtils.mark_down(messageContent);
+    
+    String cleanedMessageContent = Jsoup.clean(mark_down_message, Whitelist.basic());
 
     Message message =
         new Message(

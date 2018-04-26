@@ -22,7 +22,7 @@ public class MarkdownUtils {
    * Recognizes markdown symbols and returns message with HTML tags
    */
   // IMPLEMENT HERE
-  public String mark_down (String message) {
+  public static String mark_down (String message) {
     Node doc = parse(message);
     HtmlRenderer renderer = HtmlRenderer.builder().build();
     String rendered = renderer.render(doc);
@@ -31,11 +31,11 @@ public class MarkdownUtils {
   }
 
   //maybe required later.
-  private TextContentRenderer defaultRenderer() {
+  private static TextContentRenderer defaultRenderer() {
       return TextContentRenderer.builder().build();
   }
 
-  private Node parse (String mess){
+  private static Node parse (String mess){
     return Parser.builder().build().parse(mess);
   }
 
@@ -45,7 +45,7 @@ public class MarkdownUtils {
    * Requires: [message] is input untrusted HTML
    * Returns: safe HTML according to white-list of permitted tags and attributes.
    */
-  public String cleanMessage (String message){
+  public static String cleanMessage (String message){
     return Jsoup.clean(message, Whitelist.basic());
   }
 }
