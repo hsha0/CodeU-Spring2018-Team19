@@ -20,16 +20,18 @@ import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
-import java.io.IOException;
-import java.time.Instant;
-import java.util.List;
-import java.util.UUID;
+import codeu.utils.MarkdownUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
 
 /** Servlet class responsible for the chat page. */
 public class ChatServlet extends HttpServlet {
@@ -42,6 +44,8 @@ public class ChatServlet extends HttpServlet {
 
   /** Store class that gives access to Users. */
   private UserStore userStore;
+
+  private MarkdownUtils mdu;
 
   /** Set up state for handling chat requests. */
   @Override
@@ -141,6 +145,7 @@ public class ChatServlet extends HttpServlet {
     String messageContent = request.getParameter("message");
 
     // TO DO: update with call to markdown utils
+    //String mark_down_message = mdu.mark_down(messageContent);
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
 
