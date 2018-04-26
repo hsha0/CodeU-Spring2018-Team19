@@ -16,6 +16,24 @@ public class UsersServlet extends HttpServlet {
   private UserStore userStore;
 
   /**
+   * Set up state for handling about page-related requests. This method is only
+   * called when running in a server, not when running in a test.
+   */
+  @Override
+  public void init() throws ServletException {
+    super.init();
+    setUserStore(UserStore.getInstance());
+  }
+
+  /**
+   * Sets the UserStore used by this servlet. This function provides a common
+   * setup method for use by the test framework or the servlet's init() function.
+   */
+  void setUserStore(UserStore userStore) {
+    this.userStore = userStore;
+  }
+
+  /**
      * This function fires when a user requests the /users URL. It simply forwards
      * the request to users.jsp.
      */
@@ -40,21 +58,29 @@ public class UsersServlet extends HttpServlet {
   
   }
 
+  /**
+   * This function handles post requests to update the User with all information sent. It creates a
+   * user and updates the userstore with the new user information.
+   */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-    String username = (String) request.getSession().getAttribute("user");
-    String pictureURL = (String) request.getSession().getAttribute("pictureurl");
-    String bio = (String) request.getSession().getAttribute("bio");
-    Integer age = (Integer) request.getSession().getAttribute("age");
-    String email = (String) request.getSession().getAttribute("email");
-    String phoneNum = (String) request.getSession().getAttribute("phone");
+    String username = request.getParameter("user");
+    String pictureURL = request.getParameter("pictureurl");
+    String bio = request.getParameter("bio");
+    Integer age = Integer.parseInt(request.getParameter("age"));
+    String email = request.getParameter("email");
+    String phoneNum = request.getParameter("phone");
 
     User user = userStore.getUser(username);
-    if(username == null) {
+    if(user == null) {
+      request.setAttribute("error", "User not logged in.");
+      request.getRequestDispatcher("/WEB-INF/view/about.jsp").forward(request, response);
       response.sendRedirect("/login");
       return;
     }
-    User.Builder userBuilder = new User.Builder(user.getId(),user.getName(), user.getPassword(), user.getCreationTime());
+
+
+    User.Builder userBuilder = new User.Builder( user.getId(), user.getName(), user.getPassword(), user.getCreationTime());
     userBuilder.setAge(age);
     userBuilder.setFirstName(user.getFirstName());
     userBuilder.setLastName(user.getLastName());
@@ -63,6 +89,9 @@ public class UsersServlet extends HttpServlet {
     userBuilder.setBio(bio);
     userBuilder.setPictureURL(pictureURL);
     user = userBuilder.createUser();
+
     userStore.updateUser(user);
+
+    response.sendRedirect("/about");
   }
 }
