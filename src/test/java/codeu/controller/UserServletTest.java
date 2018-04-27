@@ -39,6 +39,8 @@ public class UserServletTest {
 
     Mockito.when(mockRequest.getParameter("user")).thenReturn("newusername");
     Mockito.when(mockRequest.getParameter("pictureurl")).thenReturn("www.url.com");
+    Mockito.when(mockRequest.getParameter("first")).thenReturn("firstname");
+    Mockito.when(mockRequest.getParameter("last")).thenReturn("lastname");
     Mockito.when(mockRequest.getParameter("bio")).thenReturn("Example text about a bio.");
     Mockito.when(mockRequest.getParameter("age")).thenReturn("20");
     Mockito.when(mockRequest.getParameter("email")).thenReturn("example@xyz.com");
