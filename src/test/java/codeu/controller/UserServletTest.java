@@ -61,6 +61,8 @@ public class UserServletTest {
     Assert.assertEquals(userArgumentCaptor.getValue().getName(), "newusername");
     Assert.assertEquals(userArgumentCaptor.getValue().getPictureURL(), "www.url.com");
     Assert.assertEquals(userArgumentCaptor.getValue().getBio(), "Example text about a bio.");
+    Assert.assertEquals(userArgumentCaptor.getValue().getFirstName(), "firstname");
+    Assert.assertEquals(userArgumentCaptor.getValue().getLastName(), "lastname");
     Assert.assertTrue(userArgumentCaptor.getValue().getAge() == 20);
     Assert.assertEquals(userArgumentCaptor.getValue().getEmail(), "example@xyz.com");
     Assert.assertEquals(userArgumentCaptor.getValue().getPhoneNum(), "3335551111");
