@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import codeu.model.store.basic.UserStore;
 import codeu.model.data.User;
 
-public class UsersServlet extends HttpServlet {
+public class UserServlet extends HttpServlet {
 
   /**
    * Store class that gives access to Users.
@@ -81,7 +81,6 @@ public class UsersServlet extends HttpServlet {
       response.sendRedirect("/login");
       return;
     }
-
 
     User.Builder userBuilder = new User.Builder(user.getId(), user.getName(), user.getPassword(), user.getCreationTime());
     userBuilder.setAge(age);

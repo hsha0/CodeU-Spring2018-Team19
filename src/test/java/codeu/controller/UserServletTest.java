@@ -20,14 +20,14 @@ import org.mockito.ArgumentCaptor;
 
 public class UserServletTest {
 
-  private UsersServlet usersServlet;
+  private UserServlet userServlet;
   private HttpServletRequest mockRequest;
   private HttpServletResponse mockResponse;
   private RequestDispatcher mockRequestDispatcher;
 
   @Before
   public void setup() {
-    usersServlet = new UsersServlet();
+    userServlet = new UserServlet();
     mockRequest = Mockito.mock(HttpServletRequest.class);
     mockResponse = Mockito.mock(HttpServletResponse.class);
     mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
@@ -48,12 +48,12 @@ public class UserServletTest {
 
 
     UserStore mockUserStore = Mockito.mock(UserStore.class);
-    usersServlet.setUserStore(mockUserStore);
+    userServlet.setUserStore(mockUserStore);
     UUID randomUUID = UUID.randomUUID();
     User user = new User(randomUUID, "newusername", "password", Instant.now());
     Mockito.when(mockUserStore.getUser("newusername")).thenReturn(user);
 
-    usersServlet.doPost(mockRequest, mockResponse);
+    userServlet.doPost(mockRequest, mockResponse);
 
     ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
     Mockito.verify(mockUserStore).updateUser(userArgumentCaptor.capture());
@@ -85,12 +85,12 @@ public class UserServletTest {
 
 
     UserStore mockUserStore = Mockito.mock(UserStore.class);
-    usersServlet.setUserStore(mockUserStore);
+    userServlet.setUserStore(mockUserStore);
     UUID randomUUID = UUID.randomUUID();
     User user = new User(randomUUID, "newusername", "password", Instant.now());
     Mockito.when(mockUserStore.getUser("newusername")).thenReturn(user);
 
-    usersServlet.doPost(mockRequest, mockResponse);
+    userServlet.doPost(mockRequest, mockResponse);
 
     Mockito.verify(mockRequest).setAttribute("error", "User not logged in.");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
