@@ -17,7 +17,9 @@ package codeu.model.data;
 import java.time.Instant;
 import java.util.UUID;
 
-/** Class representing a registered user. */
+/**
+ * Class representing a registered user.
+ */
 public class User {
   private final UUID id;
   private final String name;
@@ -29,18 +31,15 @@ public class User {
   private final String email;
   private final String phoneNum;
   private final String bio;
+  private final String pictureURL;
 
   /**
    * Constructs a new User.
    *
-   * @param newId
-   *          the ID of this User
-   * @param newName
-   *          the username of this User
-   * @param newPassword
-   *          the password of this User
-   * @param newCreation
-   *          the creation time of this User
+   * @param newId       the ID of this User
+   * @param newName     the username of this User
+   * @param newPassword the password of this User
+   * @param newCreation the creation time of this User
    */
   public User(UUID newId, String newName, String newPassword, Instant newCreation) {
 
@@ -54,35 +53,27 @@ public class User {
     this.email = "";
     this.phoneNum = "";
     this.bio = "";
+    this.pictureURL = "";
 
   }
 
   /**
    * Constructs a new User.
-   * 
-   * @param newId
-   *          the ID of this User
-   * @param newName
-   *          the username of this User
-   * @param newPassword
-   *          the password of this User
-   * @param newCreation
-   *          the creation time of this User
-   * @param newAge
-   *          the age of this User
-   * @param newFirstName
-   *          the first name of this User
-   * @param newLastName
-   *          the last name of this User
-   * @param newEmail
-   *          the email of this User
-   * @param newPhoneNum
-   *          the phone number of this User
-   * @param newBio
-   *          the bio of this User
+   *
+   * @param newId         the ID of this User
+   * @param newName       the username of this User
+   * @param newPassword   the password of this User
+   * @param newCreation   the creation time of this User
+   * @param newAge        the age of this User
+   * @param newFirstName  the first name of this User
+   * @param newLastName   the last name of this User
+   * @param newEmail      the email of this User
+   * @param newPhoneNum   the phone number of this User
+   * @param newBio        the bio of this User
+   * @param newPictureURL the URL of the profile picture of this User
    */
   private User(UUID newId, String newName, String newPassword, Instant newCreation, Integer newAge, String newFirstName,
-      String newLastName, String newEmail, String newPhoneNum, String newBio) {
+               String newLastName, String newEmail, String newPhoneNum, String newBio, String newPictureURL) {
 
     this.id = newId;
     this.name = newName;
@@ -94,6 +85,7 @@ public class User {
     this.email = newEmail;
     this.phoneNum = newPhoneNum;
     this.bio = newBio;
+    this.pictureURL = newPictureURL;
 
   }
 
@@ -108,6 +100,7 @@ public class User {
     private String nestedEmail;
     private String nestedPhoneNum;
     private String nestedBio;
+    private String nestedPictureURL;
 
     public Builder(final UUID newId, final String newName, final String newPassword, final Instant newCreation) {
       this.nestedId = newId;
@@ -166,59 +159,91 @@ public class User {
       return this;
     }
 
+    public Builder setPictureURL(String newPictureURL) {
+      this.nestedPictureURL = newPictureURL;
+      return this;
+    }
+
     public User createUser() {
       return new User(nestedId, nestedName, nestedPassword, nestedCreation, nestedAge, nestedFirstName, nestedLastName,
-          nestedEmail, nestedPhoneNum, nestedBio);
+              nestedEmail, nestedPhoneNum, nestedBio, nestedPictureURL);
     }
   }
 
-  /** Returns the ID of this User. */
+  /**
+   * Returns the ID of this User.
+   */
   public UUID getId() {
     return id;
   }
 
-  /** Returns the username of this User. */
+  /**
+   * Returns the username of this User.
+   */
   public String getName() {
     return name;
   }
 
-  /** Returns the password of this User. */
+  /**
+   * Returns the password of this User.
+   */
   public String getPassword() {
     return password;
   }
 
-  /** Returns the creation time of this User. */
+  /**
+   * Returns the creation time of this User.
+   */
   public Instant getCreationTime() {
     return creation;
   }
 
-  /** Returns the age of this User. */
+  /**
+   * Returns the age of this User.
+   */
   public Integer getAge() {
     return age;
   }
 
-  /** Returns the first name of this User. */
+  /**
+   * Returns the first name of this User.
+   */
   public String getFirstName() {
     return firstName;
   }
 
-  /** Returns the last name of this User. */
+  /**
+   * Returns the last name of this User.
+   */
   public String getLastName() {
     return lastName;
   }
 
-  /** Returns the email of this User. */
+  /**
+   * Returns the email of this User.
+   */
   public String getEmail() {
     return email;
   }
 
-  /** Returns the phone number of this User. */
+  /**
+   * Returns the phone number of this User.
+   */
   public String getPhoneNum() {
     return phoneNum;
   }
 
-  /** Returns the bio of this User. */
+  /**
+   * Returns the bio of this User.
+   */
   public String getBio() {
     return bio;
+  }
+
+  /**
+   * Returns the URL of the profile picture of this User.
+   */
+  public String getPictureURL() {
+    return pictureURL;
   }
 }
