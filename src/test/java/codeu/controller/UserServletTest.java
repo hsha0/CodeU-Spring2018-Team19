@@ -10,11 +10,11 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.ArgumentCaptor;
 
@@ -22,16 +22,26 @@ public class UserServletTest {
 
   private UserServlet userServlet;
   private HttpServletRequest mockRequest;
+  private HttpSession mockSession;
   private HttpServletResponse mockResponse;
   private RequestDispatcher mockRequestDispatcher;
+  private UserStore mockUserStore;
 
   @Before
   public void setup() {
     userServlet = new UserServlet();
+
     mockRequest = Mockito.mock(HttpServletRequest.class);
+    mockSession = Mockito.mock(HttpSession.class);
+    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
+
     mockResponse = Mockito.mock(HttpServletResponse.class);
     mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
-    Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/about.jsp")).thenReturn(mockRequestDispatcher);
+    Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/user.jsp"))
+            .thenReturn(mockRequestDispatcher);
+
+    mockUserStore = Mockito.mock(UserStore.class);
+    userServlet.setUserStore(mockUserStore);
   }
 
   @Test
