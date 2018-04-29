@@ -93,7 +93,7 @@ public class UserServlet extends HttpServlet {
     user = userBuilder.createUser();
 
     userStore.updateUser(user);
-
+    request.setAttribute("user", user);
     response.sendRedirect("/user");
   }
 }
