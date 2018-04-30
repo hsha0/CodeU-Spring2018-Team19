@@ -1,0 +1,16 @@
+* {
+    background-color: aliceblue;
+}
+
+#Profile {
+    background-color: white;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 15px;
+}
+
+#Identification {
+    background-color: #757575;
+    color: white;
+    border-radius: 5px;
+}
