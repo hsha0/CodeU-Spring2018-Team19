@@ -145,7 +145,7 @@ public class ChatServlet extends HttpServlet {
     String messageContent = request.getParameter("message");
 
     String mark_down_message = MarkdownUtils.mark_down(messageContent);
-    
+
     String cleanedMessageContent = Jsoup.clean(mark_down_message, Whitelist.basic());
 
     Message message =
