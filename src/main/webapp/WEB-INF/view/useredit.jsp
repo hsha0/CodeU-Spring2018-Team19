@@ -19,10 +19,10 @@
     <div class = "Profile">
         <div class ="Identification">
             <p id = "Username"> ${sessionScope.user}</p>
-            <p id = "FullName">${sessionScope.first} ${sessionScope.last}</p>
+            <p id = "FullName"></p> <input type="text" name="first" id="first"> <input type="text" name="last" id="last">
         </div>
         <div class = "ProfilePictureEdit">
-            <p>Profile Pic URL:</p> <input type="text" name="pictureURL" id="pictureURL">
+            <p>Profile Pic URL:</p> <input type="text" name="pictureurl" id="pictureurl">
         </div>
         <div class = "AdditionalEdit">
             <p>Age : </p> <input type = "number" name = "age" id = "age">

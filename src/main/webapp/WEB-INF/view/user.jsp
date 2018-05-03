@@ -29,7 +29,7 @@
             <p>Phone : ${sessionScope.phone}</p>
             <p>Bio : ${sessionScope.bio} </p>
         </div>
-        <button action = "/user" method = "GET">Edit</button>
+        <a href = "useredit.jsp"><button>Edit</button></a>
     </div>
     <% } else{ %>
     <p>Not logged in!</p>
