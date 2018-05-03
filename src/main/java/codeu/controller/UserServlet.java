@@ -54,7 +54,8 @@ public class UserServlet extends HttpServlet {
       response.sendRedirect("/login");
       return;
     }
-
+    
+    request.setAttribute("user", user);
     request.getRequestDispatcher("/WEB-INF/view/user.jsp").forward(request, response);
 
   }
