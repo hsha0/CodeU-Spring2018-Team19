@@ -18,8 +18,8 @@
 <form action="/useredit" method="POST">
     <div class = "Profile">
         <div class ="Identification">
-            <p id = "Username"></p> <input type="text" name="user" id="user">
-            <p id = "FullName"></p> <input type="text" name="first" id="first"> <input type="text" name="last" id="last">
+            <p id = "Username">Username : </p> <input type="text" name="user" id="user">
+            <p id = "FullName">First Last : </p> <input type="text" name="first" id="first"> <input type="text" name="last" id="last">
         </div>
         <div class = "ProfilePictureEdit">
             <p>Profile Pic URL:</p> <input type="text" name="pictureurl" id="pictureurl">

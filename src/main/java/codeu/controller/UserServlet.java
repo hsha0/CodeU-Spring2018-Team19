@@ -44,16 +44,26 @@ public class UserServlet extends HttpServlet {
     String username = (String) request.getSession().getAttribute("user");
     if (username == null) {
       // user is not logged in, don't let them go to profile page
+      System.out.println("Not found");
       response.sendRedirect("/login");
       return;
+    }
+
+    String optionalUsername = (String) request.getParameter("user");
+
+    if (optionalUsername != null){
+      username = optionalUsername;
     }
 
     User user = userStore.getUser(username);
     if (user == null) {
       // user was not found, don't let them go to profile page
+      System.out.println("Not found111");
       response.sendRedirect("/login");
       return;
     }
+
+    System.out.println("user that I got from you = " + username);
     request.setAttribute("user", user);
     request.getRequestDispatcher("/WEB-INF/view/user.jsp").forward(request, response);
 
