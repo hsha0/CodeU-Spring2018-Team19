@@ -26,7 +26,7 @@
         <div class = "Additional">
             <p>Age : ${user.getAge()} </p>
             <p>E-Mail : ${user.getEmail()} </p>
-            <p>Phone : ${user.getPhone()}</p>
+            <p>Phone : ${user.getPhoneNum()}</p>
             <p>Bio : ${user.getBio()} </p>
         </div>
         <a href = "/useredit"><button>Edit</button></a>

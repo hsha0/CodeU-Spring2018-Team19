@@ -18,7 +18,7 @@
 <form action="/useredit" method="POST">
     <div class = "Profile">
         <div class ="Identification">
-            <p id = "Username"> ${sessionScope.user}</p>
+            <p id = "Username"></p> <input type="text" name="user" id="user">
             <p id = "FullName"></p> <input type="text" name="first" id="first"> <input type="text" name="last" id="last">
         </div>
         <div class = "ProfilePictureEdit">

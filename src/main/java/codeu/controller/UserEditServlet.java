@@ -57,7 +57,6 @@ public class UserEditServlet extends HttpServlet {
     Integer age = Integer.parseInt(request.getParameter("age"));
     String email = request.getParameter("email");
     String phoneNum = request.getParameter("phone");
-
     User user = userStore.getUser(username);
     if (user == null) {
       request.setAttribute("error", "User not logged in.");
