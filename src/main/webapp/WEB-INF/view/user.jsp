@@ -10,7 +10,7 @@
 <head>
     <title>Profile</title>
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/user.css">
+    
 </head>
 <body>
     <%@ include file = "navbar.jsp" %>
