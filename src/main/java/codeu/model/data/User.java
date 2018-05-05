@@ -32,6 +32,7 @@ public class User {
   private final String phoneNum;
   private final String bio;
   private final String pictureURL;
+  private final boolean superUser;
 
   /**
    * Constructs a new User.
@@ -54,6 +55,7 @@ public class User {
     this.phoneNum = "";
     this.bio = "";
     this.pictureURL = "";
+    this.superUser = false;
 
   }
 
@@ -73,7 +75,7 @@ public class User {
    * @param newPictureURL the URL of the profile picture of this User
    */
   private User(UUID newId, String newName, String newPassword, Instant newCreation, Integer newAge, String newFirstName,
-               String newLastName, String newEmail, String newPhoneNum, String newBio, String newPictureURL) {
+               String newLastName, String newEmail, String newPhoneNum, String newBio, String newPictureURL, boolean newSuperUser) {
 
     this.id = newId;
     this.name = newName;
@@ -86,7 +88,7 @@ public class User {
     this.phoneNum = newPhoneNum;
     this.bio = newBio;
     this.pictureURL = newPictureURL;
-
+    this.superUser = newSuperUser;
   }
 
   public static class Builder {
@@ -101,6 +103,7 @@ public class User {
     private String nestedPhoneNum;
     private String nestedBio;
     private String nestedPictureURL;
+    private boolean nestedSuperUser;
 
     public Builder(final UUID newId, final String newName, final String newPassword, final Instant newCreation) {
       this.nestedId = newId;
@@ -163,12 +166,19 @@ public class User {
       this.nestedPictureURL = newPictureURL;
       return this;
     }
+    
+    public Builder setSuperUser(boolean newSuperUser) {
+      this.nestedSuperUser = newSuperUser;
+      return this;
+    }
 
     public User createUser() {
       return new User(nestedId, nestedName, nestedPassword, nestedCreation, nestedAge, nestedFirstName, nestedLastName,
-              nestedEmail, nestedPhoneNum, nestedBio, nestedPictureURL);
+              nestedEmail, nestedPhoneNum, nestedBio, nestedPictureURL, nestedSuperUser);
     }
   }
+  
+  
 
   /**
    * Returns the ID of this User.
@@ -245,5 +255,12 @@ public class User {
    */
   public String getPictureURL() {
     return pictureURL;
+  }
+  
+  /**
+   * Returns the bio of this User.
+   */
+  public boolean isSuperUser() {
+    return superUser;
   }
 }
