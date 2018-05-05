@@ -17,17 +17,17 @@
     <% if(request.getSession().getAttribute("user") != null){ %>
     <div class = "Profile">
         <div class ="Identification">
-            <p id = "Username"> ${sessionScope.user}</p>
-            <p id = "FullName">${sessionScope.first} ${sessionScope.last}</p>
+            <p id = "Username"> ${user.getName()}</p>
+            <p id = "FullName">${user.getFirstName()} ${user.getLastName()}</p>
         </div>
         <div class = "ProfilePicture">
-            <img src = "${sessionScope.pictureurl}"/>
+            <img src = "${user.getPictureURL()}"/>
         </div>
         <div class = "Additional">
-            <p>Age : ${sessionScope.age} </p>
-            <p>E-Mail : ${sessionScope.email} </p>
-            <p>Phone : ${sessionScope.phone}</p>
-            <p>Bio : ${sessionScope.bio} </p>
+            <p>Age : ${user.getAge()} </p>
+            <p>E-Mail : ${user.getEmail()} </p>
+            <p>Phone : ${user.getPhone()}</p>
+            <p>Bio : ${user.getBio()} </p>
         </div>
         <a href = "/useredit"><button>Edit</button></a>
     </div>

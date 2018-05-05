@@ -15,7 +15,7 @@
 <body>
 <%@ include file = "navbar.jsp" %>
 <% if(request.getSession().getAttribute("user") != null){ %>
-<form action="/user" method="POST">
+<form action="/useredit" method="POST">
     <div class = "Profile">
         <div class ="Identification">
             <p id = "Username"> ${sessionScope.user}</p>
