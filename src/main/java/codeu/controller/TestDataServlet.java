@@ -75,7 +75,9 @@ public class TestDataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    request.getRequestDispatcher("/WEB-INF/view/testdata.jsp").forward(request, response);
+    if(request.getSession().getAttribute("user").isSuperUser()){
+      request.getRequestDispatcher("/WEB-INF/view/testdata.jsp").forward(request, response);
+    }
   }
 
   /**
@@ -85,14 +87,16 @@ public class TestDataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    String confirmButton = request.getParameter("confirm");
+    if(request.getSession().getAttribute("user").isSuperUser()){
+      String confirmButton = request.getParameter("confirm");
 
-    if (confirmButton != null) {
-      userStore.loadTestData();
-      conversationStore.loadTestData();
-      messageStore.loadTestData();
+      if (confirmButton != null) {
+        userStore.loadTestData();
+        conversationStore.loadTestData();
+        messageStore.loadTestData();
+      }
+
+      response.sendRedirect("/");
     }
-
-    response.sendRedirect("/");
   }
 }
