@@ -258,7 +258,7 @@ public class User {
   }
   
   /**
-   * Returns the bio of this User.
+   * Returns true if this user is superuser, false otherwise
    */
   public boolean isSuperUser() {
     return superUser;

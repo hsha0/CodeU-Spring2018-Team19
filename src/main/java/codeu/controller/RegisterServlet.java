@@ -39,6 +39,14 @@ public class RegisterServlet extends HttpServlet {
   void setUserStore(UserStore userStore) {
     this.userStore = userStore;
   }
+  
+  private static final ArrayList<String> SUPER_USER_WHITE_LIST = new ArrayList<String>(){{
+    add("Jad");
+    add("Trisha");
+    add("Nathalia");
+    add("Tyler");
+    add("Han");
+  }};
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -64,14 +72,8 @@ public class RegisterServlet extends HttpServlet {
       return;
     }
     
-    ArrayList<String> whiteList = new ArrayList<String>();
-    whiteList.add("Jad");
-    whiteList.add("Trisha");
-    whiteList.add("Nathalia");
-    whiteList.add("Tyler");
-    whiteList.add("Han");
     
-    if (whiteList.contains(username)) {
+    if (SUPER_USER_WHITE_LIST.contains(username)) {
       User user = new User(UUID.randomUUID(), username, passwordHash, Instant.now());
       User.Builder userBuilder = new User.Builder(user.getId(), user.getName(), user.getPassword(), user.getCreationTime());
       userBuilder.setSuperUser(true);
