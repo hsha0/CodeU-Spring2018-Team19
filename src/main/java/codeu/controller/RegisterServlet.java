@@ -21,6 +21,17 @@ public class RegisterServlet extends HttpServlet {
    * Store class that gives access to Users.
    */
   private UserStore userStore;
+  
+  /**
+   * Initialize Super User Whitelist
+   */
+  private static final ArrayList<String> SUPER_USER_WHITE_LIST = new ArrayList<String>(){{
+    add("Jad");
+    add("Trisha");
+    add("Nathalia");
+    add("Tyler");
+    add("Han");
+  }};
 
   /**
    * Set up state for handling registration-related requests. This method is only
@@ -39,14 +50,6 @@ public class RegisterServlet extends HttpServlet {
   void setUserStore(UserStore userStore) {
     this.userStore = userStore;
   }
-  
-  private static final ArrayList<String> SUPER_USER_WHITE_LIST = new ArrayList<String>(){{
-    add("Jad");
-    add("Trisha");
-    add("Nathalia");
-    add("Tyler");
-    add("Han");
-  }};
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
