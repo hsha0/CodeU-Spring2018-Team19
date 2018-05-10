@@ -71,5 +71,7 @@ public class UserTest {
     //assert that can send messages
     Assert.assertTrue(user.canSendMessage());
   }
+
+  //TODO add test for testing scheduled messagecount reset
 }
 

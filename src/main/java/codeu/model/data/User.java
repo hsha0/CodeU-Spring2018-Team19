@@ -14,8 +14,14 @@
 
 package codeu.model.data;
 
-import java.time.Instant;
+import java.time.*;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Class representing a registered user.
@@ -35,6 +41,7 @@ public class User {
   private final boolean superUser;
   private Integer rateLimit;
   private Integer messageCount;
+  private Timer dailyResetTimer;
 
   /**
    * Constructs a new User.
@@ -60,6 +67,7 @@ public class User {
     this.superUser = false;
     this.rateLimit = null; //for clarity
     this.messageCount = 0;
+    scheduleMessageCountMidnightReset();
   }
 
   /**
@@ -109,6 +117,7 @@ public class User {
     private boolean nestedSuperUser;
     private Integer nestedRateLimit;
     private Integer nestedMessageCount;
+
 
     public Builder(final UUID newId, final String newName, final String newPassword, final Instant newCreation) {
       this.nestedId = newId;
@@ -179,12 +188,12 @@ public class User {
       return this;
     }
 
-    public Builder setNestedRateLimit(Integer nestedRateLimit) {
+    public Builder setRateLimit(Integer nestedRateLimit) {
       this.nestedRateLimit = nestedRateLimit;
       return this;
     }
 
-    public Builder setNestedMessageCount(Integer nestedMessageCount) {
+    public Builder setMessageCount(Integer nestedMessageCount) {
       this.nestedMessageCount = nestedMessageCount;
       return this;
     }
@@ -271,7 +280,21 @@ public class User {
   public String getPictureURL() {
     return pictureURL;
   }
-  
+
+  /**
+   * Returns the rate limit of this User.
+   */
+  public Integer getRateLimit() {
+    return rateLimit;
+  }
+
+  /**
+   * Returns the rate limit of this User.
+   */
+  public Integer getMessageCount() {
+    return messageCount;
+  }
+
   /**
    * Returns true if this user is superuser, false otherwise
    */
@@ -282,14 +305,47 @@ public class User {
   /**
    * Sets a rate limit for the user
    */
-  public void setRateLimit(Integer rate){
+  public void setRateLimit(Integer rate) {
     this.rateLimit = rate;
+  }
+
+  /**
+   * Schedule a reset of messages to be done at midnight
+   */
+  private void scheduleMessageCountMidnightReset(){
+    // Time on computer
+    LocalDateTime localNow = LocalDateTime.now();
+    ZoneId currentZone = ZoneId.of("America/New_York");
+
+    // Compiled time of computer time and zone
+    ZonedDateTime zonedNow = ZonedDateTime.of(localNow, currentZone);
+
+    // GetMidNight Time
+    ZonedDateTime zDateTimeMidnight = zonedNow.withHour(0).withMinute(0).withSecond(0);
+
+    // If midnight occurs on next day (almost always will), add day to time
+    if(zonedNow.compareTo(zDateTimeMidnight) > 0)
+      zDateTimeMidnight = zDateTimeMidnight.plusDays(1);
+
+    // Time between now and midnight
+    Duration duration = Duration.between(zonedNow, zDateTimeMidnight);
+    long initalDelay = duration.getSeconds();
+
+    // Not sure about if TimerTask and ScheduledExecutorService should be doing the scheduling job here
+    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    scheduler.scheduleAtFixedRate(new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                      resetMessageCount();
+                                    }
+                                  }, initalDelay,
+            24 * 60 * 60, TimeUnit.SECONDS);
   }
 
   /**
    * Removes any rate limit on the user
    */
-  public void removeRateLimit(){
+  public void removeRateLimit() {
     this.rateLimit = null;
     //Consider resetting the message count after this operation
   }
@@ -304,14 +360,14 @@ public class User {
   /**
    * Increments the message count counter
    */
-  public void incrementMessageCount(){
+  public void incrementMessageCount() {
     messageCount++;
   }
 
   /**
    * Resets message count of the user
    */
-  public void resetMessageCount(){
+  public void resetMessageCount() {
     messageCount = 0;
   }
 }
