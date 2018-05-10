@@ -141,7 +141,9 @@ public class ChatServlet extends HttpServlet {
       response.sendRedirect("/conversations");
       return;
     }
-
+    //add logic for checking if user can send message.
+    //if they can't send error?
+    //if they can make sure to increment user's messages sent
     String messageContent = request.getParameter("message");
 
     String mark_down_message = MarkdownUtils.mark_down(messageContent);
