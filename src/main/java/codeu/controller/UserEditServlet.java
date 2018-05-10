@@ -49,14 +49,18 @@ public class UserEditServlet extends HttpServlet {
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-    String username = request.getParameter("user");
-    String pictureURL = request.getParameter("pictureurl");
-    String first = request.getParameter("first");
-    String last = request.getParameter("last");
-    String bio = request.getParameter("bio");
-    Integer age = Integer.parseInt(request.getParameter("age"));
-    String email = request.getParameter("email");
-    String phoneNum = request.getParameter("phone");
+    String username = ""+request.getParameter("user");
+    String pictureURL = ""+request.getParameter("pictureurl");
+    String first = ""+request.getParameter("first");
+    String last = ""+request.getParameter("last");
+    String bio = ""+request.getParameter("bio");
+    String ageString = ""+request.getParameter("age");
+    Integer age = 0;
+    if(ageString.length() > 0){
+      age = Integer.parseInt(request.getParameter("age"));
+    }
+    String email = ""+request.getParameter("email");
+    String phoneNum = ""+request.getParameter("phone");
     User user = userStore.getUser(username);
     if (user == null) {
       request.setAttribute("error", "User not logged in.");
