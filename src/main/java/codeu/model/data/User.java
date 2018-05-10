@@ -166,10 +166,14 @@ public class User {
       this.nestedPictureURL = newPictureURL;
       return this;
     }
-    
+
     public Builder setSuperUser(boolean newSuperUser) {
       this.nestedSuperUser = newSuperUser;
       return this;
+    }
+
+    public User build() {
+      return new User(this);
     }
 
     public User createUser() {
@@ -177,8 +181,8 @@ public class User {
               nestedEmail, nestedPhoneNum, nestedBio, nestedPictureURL, nestedSuperUser);
     }
   }
-  
-  
+
+
 
   /**
    * Returns the ID of this User.
@@ -256,7 +260,7 @@ public class User {
   public String getPictureURL() {
     return pictureURL;
   }
-  
+
   /**
    * Returns true if this user is superuser, false otherwise
    */
