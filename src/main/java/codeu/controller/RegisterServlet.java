@@ -1,5 +1,6 @@
 package codeu.controller;
 
+import java.util.ArrayList;
 import java.util.UUID;
 import java.time.Instant;
 import java.io.IOException;
@@ -20,6 +21,17 @@ public class RegisterServlet extends HttpServlet {
    * Store class that gives access to Users.
    */
   private UserStore userStore;
+  
+  /**
+   * Initialize Super User Whitelist
+   */
+  private static final ArrayList<String> SUPER_USER_WHITE_LIST = new ArrayList<String>(){{
+    add("Jad");
+    add("Trisha");
+    add("Nathalia");
+    add("Tyler");
+    add("Han");
+  }};
 
   /**
    * Set up state for handling registration-related requests. This method is only
@@ -62,10 +74,20 @@ public class RegisterServlet extends HttpServlet {
       request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
       return;
     }
-
-    User user = new User(UUID.randomUUID(), username, passwordHash, Instant.now());
-    userStore.addUser(user);
-
+    
+    
+    if (SUPER_USER_WHITE_LIST.contains(username)) {
+      User user = new User(UUID.randomUUID(), username, passwordHash, Instant.now());
+      User.Builder userBuilder = new User.Builder(user.getId(), user.getName(), user.getPassword(), user.getCreationTime());
+      userBuilder.setSuperUser(true);
+      user = userBuilder.createUser();
+      userStore.addUser(user); 
+    }
+    else {
+      User user = new User(UUID.randomUUID(), username, passwordHash, Instant.now());
+      userStore.addUser(user);
+    }
     response.sendRedirect("/login");
+    
   }
 }
