@@ -1,4 +1,4 @@
-<%--
+<%@ page import="com.sun.org.apache.xpath.internal.operations.Bool" %><%--
   Created by IntelliJ IDEA.
   User: jadzeineddine
   Date: 4/29/18
@@ -29,9 +29,9 @@
             <p>Phone : ${user.getPhoneNum()}</p>
             <p>Bio : ${user.getBio()} </p>
         </div>
-        <%--<% if( request.getSession().getAttribute("loggedin") != null ){ %>--%>
+        <% if( (Boolean) request.getAttribute("allowEdit")){ %>
         <a href = "/useredit"><button style = "margin-left: 45%; margin-bottom: 5px">Edit</button></a>
-        <%--<%}%>--%>
+        <%}%>
     </div>
     <% } else{ %>
     <p>Not logged in!</p>

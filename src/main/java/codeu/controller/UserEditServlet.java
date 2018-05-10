@@ -49,7 +49,7 @@ public class UserEditServlet extends HttpServlet {
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-    String username = ""+request.getParameter("user");
+    String username = ""+request.getSession().getAttribute("user");
     String pictureURL = ""+request.getParameter("pictureurl");
     String first = ""+request.getParameter("first");
     String last = ""+request.getParameter("last");

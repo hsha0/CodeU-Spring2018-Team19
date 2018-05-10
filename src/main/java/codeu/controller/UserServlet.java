@@ -49,9 +49,13 @@ public class UserServlet extends HttpServlet {
       return;
     }
 
-    String optionalUsername = (String) request.getParameter("user");
+    String optionalUsername = request.getParameter("user");
+    boolean isSameUser = true;
 
     if (optionalUsername != null){
+      if(optionalUsername.compareTo(username) != 0){
+        isSameUser = false;
+      }
       username = optionalUsername;
     }
 
@@ -64,7 +68,9 @@ public class UserServlet extends HttpServlet {
     }
 
     System.out.println("user that I got from you = " + username);
+    System.out.println("Is same user = " + isSameUser);
     request.setAttribute("user", user);
+    request.setAttribute("allowEdit", isSameUser);
     request.getRequestDispatcher("/WEB-INF/view/user.jsp").forward(request, response);
 
   }

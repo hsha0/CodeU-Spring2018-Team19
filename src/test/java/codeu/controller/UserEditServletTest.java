@@ -53,7 +53,7 @@ public class UserEditServletTest {
   @Test
   public void testDoPostUpdatesUserCorrectly() throws IOException, ServletException {
 
-    Mockito.when(mockRequest.getParameter("user")).thenReturn("newusername");
+    Mockito.when(mockRequest.getSession().getAttribute("user")).thenReturn("newusername");
     Mockito.when(mockRequest.getParameter("pictureurl")).thenReturn("www.url.com");
     Mockito.when(mockRequest.getParameter("first")).thenReturn("firstname");
     Mockito.when(mockRequest.getParameter("last")).thenReturn("lastname");
