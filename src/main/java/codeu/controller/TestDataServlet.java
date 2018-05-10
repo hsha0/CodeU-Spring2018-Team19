@@ -75,7 +75,8 @@ public class TestDataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    if(request.getSession().getAttribute("user").isSuperUser()){
+    User currentUser = (User) request.getSession().getAttribute("user");
+    if (currentUser.isSuperUser()) {
       request.getRequestDispatcher("/WEB-INF/view/testdata.jsp").forward(request, response);
     }
   }
@@ -87,7 +88,8 @@ public class TestDataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    if(request.getSession().getAttribute("user").isSuperUser()){
+    User currentUser = (User) request.getSession().getAttribute("user");
+    if (currentUser.isSuperUser()) {
       String confirmButton = request.getParameter("confirm");
 
       if (confirmButton != null) {
