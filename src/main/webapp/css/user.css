@@ -1,13 +1,32 @@
 
-#Profile {
+.Profile {
     background-color: white;
     margin-left: 30%;
     margin-right: 30%;
     margin-top: 15px;
+    border-radius: 5px;
 }
 
-#Identification {
+.Identification {
     background-color: #757575;
     color: white;
     border-radius: 5px;
+    padding-left: 10px;
+}
+
+.ProfilePicture {
+    padding-left: 8px;
+}
+
+.Additional {
+    margin-left: 10px;
+}
+
+#Username {
+    font-size: 34px;
+    font-color: #e2c5ff;
+}
+
+#FullName {
+    color: black;
 }

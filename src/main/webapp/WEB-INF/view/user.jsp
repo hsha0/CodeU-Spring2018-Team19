@@ -29,7 +29,9 @@
             <p>Phone : ${user.getPhoneNum()}</p>
             <p>Bio : ${user.getBio()} </p>
         </div>
-        <a href = "/useredit"><button>Edit</button></a>
+        <%--<% if( request.getSession().getAttribute("loggedin") != null ){ %>--%>
+        <a href = "/useredit"><button style = "margin-left: 45%; margin-bottom: 5px">Edit</button></a>
+        <%--<%}%>--%>
     </div>
     <% } else{ %>
     <p>Not logged in!</p>
