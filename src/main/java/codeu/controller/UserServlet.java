@@ -90,6 +90,8 @@ public class UserServlet extends HttpServlet {
     userBuilder.setPhoneNum(phoneNum);
     userBuilder.setBio(bio);
     userBuilder.setPictureURL(pictureURL);
+    userBuilder.setRateLimit(user.getRateLimit());
+    userBuilder.setMessageCount(user.getMessageCount());
     user = userBuilder.createUser();
 
     userStore.updateUser(user);
