@@ -158,6 +158,10 @@ public class ChatServlet extends HttpServlet {
             cleanedMessageContent,
             Instant.now());
 
+//    if (user.cansendmessage()){
+//      user increment messages
+//    }
+
     messageStore.addMessage(message);
 
     // redirect to a GET request

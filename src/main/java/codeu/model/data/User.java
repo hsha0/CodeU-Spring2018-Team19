@@ -33,6 +33,8 @@ public class User {
   private final String bio;
   private final String pictureURL;
   private final boolean superUser;
+  private Integer rateLimit;
+  private Integer messageCount;
 
   /**
    * Constructs a new User.
@@ -56,7 +58,8 @@ public class User {
     this.bio = "";
     this.pictureURL = "";
     this.superUser = false;
-
+    this.rateLimit = null; //for clarity
+    this.messageCount = 0;
   }
 
   /**
@@ -73,10 +76,10 @@ public class User {
    * @param newPhoneNum   the phone number of this User
    * @param newBio        the bio of this User
    * @param newPictureURL the URL of the profile picture of this User
+   * @param rateLimit     the rateLimit of the user
    */
   private User(UUID newId, String newName, String newPassword, Instant newCreation, Integer newAge, String newFirstName,
-               String newLastName, String newEmail, String newPhoneNum, String newBio, String newPictureURL, boolean newSuperUser) {
-
+               String newLastName, String newEmail, String newPhoneNum, String newBio, String newPictureURL, boolean newSuperUser, Integer rateLimit, Integer messageCount) {
     this.id = newId;
     this.name = newName;
     this.password = newPassword;
@@ -104,12 +107,16 @@ public class User {
     private String nestedBio;
     private String nestedPictureURL;
     private boolean nestedSuperUser;
+    private Integer nestedRateLimit;
+    private Integer nestedMessageCount;
 
     public Builder(final UUID newId, final String newName, final String newPassword, final Instant newCreation) {
       this.nestedId = newId;
       this.nestedName = newName;
       this.nestedPassword = newPassword;
       this.nestedCreation = newCreation;
+      this.nestedRateLimit = null;
+      this.nestedMessageCount = 0;
     }
 
     public Builder setId(UUID newId) {
@@ -166,19 +173,27 @@ public class User {
       this.nestedPictureURL = newPictureURL;
       return this;
     }
-    
+
     public Builder setSuperUser(boolean newSuperUser) {
       this.nestedSuperUser = newSuperUser;
       return this;
     }
 
+    public Builder setNestedRateLimit(Integer nestedRateLimit) {
+      this.nestedRateLimit = nestedRateLimit;
+      return this;
+    }
+
+    public Builder setNestedMessageCount(Integer nestedMessageCount) {
+      this.nestedMessageCount = nestedMessageCount;
+      return this;
+    }
+
     public User createUser() {
       return new User(nestedId, nestedName, nestedPassword, nestedCreation, nestedAge, nestedFirstName, nestedLastName,
-              nestedEmail, nestedPhoneNum, nestedBio, nestedPictureURL, nestedSuperUser);
+              nestedEmail, nestedPhoneNum, nestedBio, nestedPictureURL, nestedSuperUser, nestedRateLimit, nestedMessageCount);
     }
   }
-  
-  
 
   /**
    * Returns the ID of this User.
@@ -262,5 +277,41 @@ public class User {
    */
   public boolean isSuperUser() {
     return superUser;
+  }
+
+  /**
+   * Sets a rate limit for the user
+   */
+  public void setRateLimit(Integer rate){
+    this.rateLimit = rate;
+  }
+
+  /**
+   * Removes any rate limit on the user
+   */
+  public void removeRateLimit(){
+    this.rateLimit = null;
+    //Consider resetting the message count after this operation
+  }
+
+  /**
+   * Returns true if the user is able to send a message, false otherwise
+   */
+  public boolean canSendMessage() {
+    return (rateLimit == null || messageCount < rateLimit);
+  }
+
+  /**
+   * Increments the message count counter
+   */
+  public void incrementMessageCount(){
+    messageCount++;
+  }
+
+  /**
+   * Resets message count of the user
+   */
+  public void resetMessageCount(){
+    messageCount = 0;
   }
 }
