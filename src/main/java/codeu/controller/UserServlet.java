@@ -44,7 +44,6 @@ public class UserServlet extends HttpServlet {
     String username = (String) request.getSession().getAttribute("user");
     if (username == null) {
       // user is not logged in, don't let them go to profile page
-      System.out.println("Not found");
       response.sendRedirect("/login");
       return;
     }
@@ -62,13 +61,10 @@ public class UserServlet extends HttpServlet {
     User user = userStore.getUser(username);
     if (user == null) {
       // user was not found, don't let them go to profile page
-      System.out.println("Not found111");
       response.sendRedirect("/login");
       return;
     }
 
-    System.out.println("user that I got from you = " + username);
-    System.out.println("Is same user = " + isSameUser);
     request.setAttribute("user", user);
     request.setAttribute("allowEdit", isSameUser);
     request.getRequestDispatcher("/WEB-INF/view/user.jsp").forward(request, response);

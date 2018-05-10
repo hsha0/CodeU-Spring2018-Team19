@@ -18,16 +18,16 @@
 <form action="/useredit" method="POST">
     <div class = "Profile">
         <div class ="Identification">
-            <p id = "FullName">First Last : </p> <input type="text" name="first" id="first"> <input type="text" name="last" id="last">
+            <p id = "FullName">First Last : </p> <input type="text" name="first" value = "${user.getFirstName()}" id="first"> <input value = "${user.getLastName()}" type="text" name="last" id="last">
         </div>
         <div class = "ProfilePicture">
-            <p>Profile Pic URL:</p> <input type="text" name="pictureurl" id="pictureurl">
+            <p>Profile Pic URL:</p> <input type="text" name="pictureurl" value = "${user.getPictureURL()}" id="pictureurl">
         </div>
         <div class = "Additional">
-            <p>Age : </p> <input type = "number" name = "age" id = "age">
-            <p>E-Mail : </p> <input type = "text" name = "email" id = "email">
-            <p>Phone : </p> <input type = "number" name = "phone" id = "phone">
-            <p>Bio : </p> <input type = "text" name = "bio" id = "bio">
+            <p>Age : </p> <input type = "number" name = "age" id = "age" value = "${user.getAge()}" >
+            <p>E-Mail : </p> <input type = "text" name = "email" id = "email" value = "${user.getEmail()}" >
+            <p>Phone : </p> <input type = "number" name = "phone" id = "phone" value = "${user.getPhoneNum()}" >
+            <p>Bio : </p> <input type = "text" name = "bio" id = "bio" value = "${user.getBio()}" >
         </div>
         <button type="submit" style = "margin-left: 45%; margin-bottom: 10px">Submit</button>
     </div>

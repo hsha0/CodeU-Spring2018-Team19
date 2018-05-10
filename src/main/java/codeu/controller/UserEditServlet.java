@@ -40,6 +40,22 @@ public class UserEditServlet extends HttpServlet {
    */
     @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+    String username = (String) request.getSession().getAttribute("user");
+    if (username == null) {
+      // user is not logged in, don't let them go to profile edit page
+      response.sendRedirect("/login");
+      return;
+    }
+
+    User user = userStore.getUser(username);
+    if (user == null) {
+      // user was not found, don't let them go to profile edit page
+      response.sendRedirect("/login");
+      return;
+    }
+
+    request.setAttribute("user", user);
     request.getRequestDispatcher("/WEB-INF/view/useredit.jsp").forward(request, response);
   }
 
@@ -54,14 +70,17 @@ public class UserEditServlet extends HttpServlet {
     String first = ""+request.getParameter("first");
     String last = ""+request.getParameter("last");
     String bio = ""+request.getParameter("bio");
+
     String ageString = ""+request.getParameter("age");
     Integer age = 0;
     if(ageString.length() > 0){
       age = Integer.parseInt(request.getParameter("age"));
     }
+
     String email = ""+request.getParameter("email");
     String phoneNum = ""+request.getParameter("phone");
     User user = userStore.getUser(username);
+
     if (user == null) {
       request.setAttribute("error", "User not logged in.");
       response.sendRedirect("/login");

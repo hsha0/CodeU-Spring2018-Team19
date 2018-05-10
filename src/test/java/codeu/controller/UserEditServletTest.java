@@ -46,6 +46,10 @@ public class UserEditServletTest {
   
     @Test
   public void testDoGet() throws IOException, ServletException {
+    Mockito.when(mockRequest.getSession().getAttribute("user")).thenReturn("newusername");
+    UUID randomUUID = UUID.randomUUID();
+    User user = new User(randomUUID, "newusername", "password", Instant.now());
+    Mockito.when(mockUserStore.getUser("newusername")).thenReturn(user);
     userEditServlet.doGet(mockRequest, mockResponse);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
