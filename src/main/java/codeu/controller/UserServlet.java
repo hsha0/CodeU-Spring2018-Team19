@@ -48,6 +48,16 @@ public class UserServlet extends HttpServlet {
       return;
     }
 
+    String optionalUsername = request.getParameter("user");
+    boolean isSameUser = true;
+
+    if (optionalUsername != null){
+      if(optionalUsername.compareTo(username) != 0){
+        isSameUser = false;
+      }
+      username = optionalUsername;
+    }
+
     User user = userStore.getUser(username);
     if (user == null) {
       // user was not found, don't let them go to profile page
@@ -56,46 +66,8 @@ public class UserServlet extends HttpServlet {
     }
 
     request.setAttribute("user", user);
+    request.setAttribute("allowEdit", isSameUser);
     request.getRequestDispatcher("/WEB-INF/view/user.jsp").forward(request, response);
 
-  }
-
-  /**
-   * This function handles post requests to update the User with all information sent. It creates a
-   * user and updates the userstore with the new user information.
-   */
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-    String username = request.getParameter("user");
-    String pictureURL = request.getParameter("pictureurl");
-    String first = request.getParameter("first");
-    String last = request.getParameter("last");
-    String bio = request.getParameter("bio");
-    Integer age = Integer.parseInt(request.getParameter("age"));
-    String email = request.getParameter("email");
-    String phoneNum = request.getParameter("phone");
-
-    User user = userStore.getUser(username);
-    if (user == null) {
-      request.setAttribute("error", "User not logged in.");
-      response.sendRedirect("/login");
-      return;
-    }
-
-    User.Builder userBuilder = new User.Builder(user.getId(), user.getName(), user.getPassword(), user.getCreationTime());
-    userBuilder.setAge(age);
-    userBuilder.setFirstName(first);
-    userBuilder.setLastName(last);
-    userBuilder.setEmail(email);
-    userBuilder.setPhoneNum(phoneNum);
-    userBuilder.setBio(bio);
-    userBuilder.setPictureURL(pictureURL);
-    userBuilder.setRateLimit(user.getRateLimit());
-    userBuilder.setMessageCount(user.getMessageCount());
-    user = userBuilder.createUser();
-
-    userStore.updateUser(user);
-    request.setAttribute("user", user);
-    response.sendRedirect("/user");
   }
 }

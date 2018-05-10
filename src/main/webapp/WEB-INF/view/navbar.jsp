@@ -2,7 +2,7 @@
   <a id="navTitle" href="/">Team TNT!</a>
   <a href="/conversations">Conversations</a>
   <% if(request.getSession().getAttribute("user") != null){ %>
-    <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
+    <a href="/user">Hello <%= request.getSession().getAttribute("user") %>!</a>
   <% } else{ %>
     <a href="/login">Login</a>
     <a href="/register">Register</a>
