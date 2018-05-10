@@ -17,6 +17,8 @@ package codeu.model.store.basic;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.store.persistence.PersistentDataStore;
+import codeu.model.store.persistence.PersistentDataStoreException;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -62,7 +64,6 @@ public class DefaultDataStore {
     return instance;
   }
 
-  private List<User> users;
   private List<Conversation> conversations;
   private List<Message> messages;
 
@@ -71,7 +72,6 @@ public class DefaultDataStore {
    * instead.
    */
   private DefaultDataStore() {
-    users = new ArrayList<>();
     conversations = new ArrayList<>();
     messages = new ArrayList<>();
 
@@ -86,7 +86,15 @@ public class DefaultDataStore {
     return true;
   }
 
+  /** Gets most updates list of users from the PersistentDataStorage using PersistentStorageAgent */
   public List<User> getAllUsers() {
+    List<User> users = new ArrayList<>();
+    try {
+      users = PersistentStorageAgent.getInstance().loadUsers();
+      return users;
+    } catch (PersistentDataStoreException e) {
+      e.printStackTrace();
+    }
     return users;
   }
 
@@ -107,29 +115,28 @@ public class DefaultDataStore {
       User user = new User(UUID.randomUUID(), randomUsernames.get(i), BCrypt.hashpw("password", BCrypt.gensalt()),
           Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(user);
-      users.add(user);
     }
   }
 
   private void addRandomConversations() {
     for (int i = 1; i <= DEFAULT_CONVERSATION_COUNT; i++) {
-      User user = getRandomElement(users);
+      User user = getRandomElement(getAllUsers());
       String title = "Conversation_" + i;
       Conversation conversation = new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(conversation);
-      conversations.add(conversation);
+      conversations.add(conversation);//TODO: do the same as users
     }
   }
 
   private void addRandomMessages() {
     for (int i = 0; i < DEFAULT_MESSAGE_COUNT; i++) {
       Conversation conversation = getRandomElement(conversations);
-      User author = getRandomElement(users);
+      User author = getRandomElement(getAllUsers());
       String content = getRandomMessageContent();
 
       Message message = new Message(UUID.randomUUID(), conversation.getId(), author.getId(), content, Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(message);
-      messages.add(message);
+      messages.add(message);//TODO: do the same as users
     }
   }
 

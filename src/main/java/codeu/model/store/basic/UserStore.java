@@ -19,6 +19,7 @@ import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 /**
  * Store class that uses in-memory data structures to hold values and automatically loads from and
@@ -56,7 +57,7 @@ public class UserStore {
   private PersistentStorageAgent persistentStorageAgent;
 
   /** The in-memory list of Users. */
-  private List<User> users;
+  private List<User> users; //TODO: This may not be needed
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private UserStore(PersistentStorageAgent persistentStorageAgent) {
@@ -75,13 +76,8 @@ public class UserStore {
    * @return null if username does not match any existing User.
    */
   public User getUser(String username) {
-    // This approach will be pretty slow if we have many users.
-    for (User user : users) {
-      if (user.getName().equals(username)) {
-        return user;
-      }
-    }
-    return null;
+    User user = getInstance().getUser(username);
+    return user;
   }
 
   /**
@@ -90,17 +86,12 @@ public class UserStore {
    * @return null if the UUID does not match any existing User.
    */
   public User getUser(UUID id) {
-    for (User user : users) {
-      if (user.getId().equals(id)) {
-        return user;
-      }
-    }
-    return null;
+    User user = getInstance().getUser(id);
+    return user;
   }
 
   /** Add a new user to the current set of users known to the application. */
   public void addUser(User user) {
-    users.add(user);
     persistentStorageAgent.writeThrough(user);
   }
 
@@ -120,11 +111,11 @@ public class UserStore {
 
   /** Return true if the given username is known to the application. */
   public boolean isUserRegistered(String username) {
-    for (User user : users) {
-      if (user.getName().equals(username)) {
-        return true;
-      }
+    User user = getInstance().getUser(username);
+    if(user != null){
+      return true;
     }
+
     return false;
   }
 
@@ -133,6 +124,8 @@ public class UserStore {
    * is loaded from Datastore.
    */
   public void setUsers(List<User> users) {
-    this.users = users;
+    for (User user: users) {
+      getInstance().addUser(user);
+    }
   }
 }
