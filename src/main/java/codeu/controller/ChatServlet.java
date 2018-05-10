@@ -158,6 +158,9 @@ public class ChatServlet extends HttpServlet {
       user.incrementMessageCount();
       messageStore.addMessage(message);
     }
+    else {
+      request.setAttribute("error", "User reached daily rate limit.");
+    }
     //else do nothing?
 
     // redirect to a GET request
