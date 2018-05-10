@@ -12,10 +12,11 @@
     color: white;
     border-radius: 5px;
     padding-left: 10px;
+    padding-bottom: 10px;
 }
 
 .ProfilePicture {
-    padding-left: 8px;
+    padding-left: 10px;
 }
 
 .Additional {
@@ -30,3 +31,4 @@
 #FullName {
     color: black;
 }
+

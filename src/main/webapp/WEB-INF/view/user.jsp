@@ -30,7 +30,7 @@
             <p>Bio : ${user.getBio()} </p>
         </div>
         <% if( (Boolean) request.getAttribute("allowEdit")){ %>
-        <a href = "/useredit"><button style = "margin-left: 45%; margin-bottom: 5px">Edit</button></a>
+        <a href = "/useredit"><button style = "margin-left: 45%; margin-bottom: 10px">Edit</button></a>
         <%}%>
     </div>
     <% } else{ %>

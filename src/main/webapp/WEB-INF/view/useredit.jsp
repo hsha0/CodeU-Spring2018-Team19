@@ -18,19 +18,18 @@
 <form action="/useredit" method="POST">
     <div class = "Profile">
         <div class ="Identification">
-            <p id = "Username">Username : </p> <input type="text" name="user" id="user">
             <p id = "FullName">First Last : </p> <input type="text" name="first" id="first"> <input type="text" name="last" id="last">
         </div>
-        <div class = "ProfilePictureEdit">
+        <div class = "ProfilePicture">
             <p>Profile Pic URL:</p> <input type="text" name="pictureurl" id="pictureurl">
         </div>
-        <div class = "AdditionalEdit">
+        <div class = "Additional">
             <p>Age : </p> <input type = "number" name = "age" id = "age">
             <p>E-Mail : </p> <input type = "text" name = "email" id = "email">
             <p>Phone : </p> <input type = "number" name = "phone" id = "phone">
             <p>Bio : </p> <input type = "text" name = "bio" id = "bio">
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit" style = "margin-left: 45%; margin-bottom: 10px">Submit</button>
     </div>
 </form>
 <% } else{ %>
