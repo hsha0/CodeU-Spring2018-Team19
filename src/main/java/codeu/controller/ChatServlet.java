@@ -141,13 +141,9 @@ public class ChatServlet extends HttpServlet {
       response.sendRedirect("/conversations");
       return;
     }
-    //add logic for checking if user can send message.
-    //if they can't send error?
-    //if they can make sure to increment user's messages sent
+
     String messageContent = request.getParameter("message");
-
     String mark_down_message = MarkdownUtils.mark_down(messageContent);
-
     String cleanedMessageContent = Jsoup.clean(mark_down_message, Whitelist.basic());
 
     Message message =
@@ -158,11 +154,11 @@ public class ChatServlet extends HttpServlet {
             cleanedMessageContent,
             Instant.now());
 
-//    if (user.cansendmessage()){
-//      user increment messages
-//    }
-
-    messageStore.addMessage(message);
+    if(user.canSendMessage()){
+      user.incrementMessageCount();
+      messageStore.addMessage(message);
+    }
+    //else do nothing?
 
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);
