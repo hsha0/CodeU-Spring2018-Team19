@@ -172,10 +172,6 @@ public class User {
       return this;
     }
 
-    public User build() {
-      return new User(this);
-    }
-
     public User createUser() {
       return new User(nestedId, nestedName, nestedPassword, nestedCreation, nestedAge, nestedFirstName, nestedLastName,
               nestedEmail, nestedPhoneNum, nestedBio, nestedPictureURL, nestedSuperUser);

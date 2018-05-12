@@ -49,7 +49,7 @@ public class TestDataServletTest {
     String name = "test_username";
     Instant creation = Instant.now();
     String password = "password";
-    User superUser = User.Builder(id, name, password, creation).setSuperUser(true).build();
+    User superUser = User.Builder(id, name, password, creation).setSuperUser(true).createUser();
 
     mockSession = Mockito.mock(HttpSession.class);
     Mockito.when(mockSession.getAttribute("user")).thenReturn(superUser);
