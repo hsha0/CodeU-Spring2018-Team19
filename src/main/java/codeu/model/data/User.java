@@ -256,7 +256,7 @@ public class User {
   public String getPictureURL() {
     return pictureURL;
   }
-  
+
   /**
    * Returns true if this user is superuser, false otherwise
    */
