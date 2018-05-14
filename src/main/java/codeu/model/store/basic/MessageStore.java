@@ -87,7 +87,7 @@ public class MessageStore {
 
   /** Add a new message to the current set of messages known to the application. */
   public void addMessage(Message message) {
-    //This is necessary due to the bugs in loaduser in persistent data store.
+    //This is necessary due to the bugs with loaduser(username) in persistent data store.
     User user = new User(message.getId(), "fake", "fake", Instant.now());
     try {
       List<User> users = persistentStorageAgent.loadUsers();
@@ -96,7 +96,7 @@ public class MessageStore {
           user = u;
         }
       }
-      if(user.getRateLimit() > persistentStorageAgent.getDailyMessageCountFor(message.getAuthorId())) {
+      if(user.getRateLimit()== null || user.getRateLimit() > persistentStorageAgent.getDailyMessageCountFor(message.getAuthorId())){
         messages.add(message);
         persistentStorageAgent.writeThrough(message);
       }

@@ -35,43 +35,5 @@ public class UserTest {
     Assert.assertEquals(password, user.getPassword());
     Assert.assertEquals(creation, user.getCreationTime());
   }
-
-  @Test
-  public void testRateLimit(){
-    UUID id = UUID.randomUUID();
-    String name = "test_username";
-    Instant creation = Instant.now();
-    String password = "password";
-
-    User user = new User(id, name, password, creation);
-    user.setRateLimit(2);
-    user.incrementMessageCount();
-    user.incrementMessageCount();
-    user.incrementMessageCount();
-
-    //assert that usre can no longer send messages
-    Assert.assertTrue(!user.canSendMessage());
-  }
-
-
-  @Test
-  public void testRateLimitRemovalWorks(){
-    UUID id = UUID.randomUUID();
-    String name = "test_username";
-    Instant creation = Instant.now();
-    String password = "password";
-
-    User user = new User(id, name, password, creation);
-    user.setRateLimit(2);
-    user.incrementMessageCount();
-    user.incrementMessageCount();
-    user.incrementMessageCount();
-    user.removeRateLimit();
-
-    //assert that can send messages
-    Assert.assertTrue(user.canSendMessage());
-  }
-
-  //TODO add test for testing scheduled messagecount reset
 }
 

@@ -40,8 +40,6 @@ public class User {
   private final String pictureURL;
   private final boolean superUser;
   private Integer rateLimit;
-  private Integer messageCount;
-  private Timer dailyResetTimer;
 
   /**
    * Constructs a new User.
@@ -66,8 +64,6 @@ public class User {
     this.pictureURL = "";
     this.superUser = false;
     this.rateLimit = null; //for clarity
-    this.messageCount = 0;
-    scheduleMessageCountMidnightReset();
   }
 
   /**
@@ -188,13 +184,13 @@ public class User {
       return this;
     }
 
-    public Builder setRateLimit(Integer nestedRateLimit) {
-      this.nestedRateLimit = nestedRateLimit;
+    public Builder setRateLimit(Integer newRateLimit) {
+      this.nestedRateLimit = newRateLimit;
       return this;
     }
 
-    public Builder setMessageCount(Integer nestedMessageCount) {
-      this.nestedMessageCount = nestedMessageCount;
+    public Builder setMessageCount(Integer newMessageCount) {
+      this.nestedMessageCount = newMessageCount;
       return this;
     }
 
@@ -289,13 +285,6 @@ public class User {
   }
 
   /**
-   * Returns the rate limit of this User.
-   */
-  public Integer getMessageCount() {
-    return messageCount;
-  }
-
-  /**
    * Returns true if this user is superuser, false otherwise
    */
   public boolean isSuperUser() {
@@ -310,64 +299,9 @@ public class User {
   }
 
   /**
-   * Schedule a reset of messages to be done at midnight
-   */
-  private void scheduleMessageCountMidnightReset(){
-    // Time on computer
-    LocalDateTime localNow = LocalDateTime.now();
-    ZoneId currentZone = ZoneId.of("America/New_York");
-
-    // Compiled time of computer time and zone
-    ZonedDateTime zonedNow = ZonedDateTime.of(localNow, currentZone);
-
-    // GetMidNight Time
-    ZonedDateTime zDateTimeMidnight = zonedNow.withHour(0).withMinute(0).withSecond(0);
-
-    // If midnight occurs on next day (almost always will), add day to time
-    if(zonedNow.compareTo(zDateTimeMidnight) > 0)
-      zDateTimeMidnight = zDateTimeMidnight.plusDays(1);
-
-    // Time between now and midnight
-    Duration duration = Duration.between(zonedNow, zDateTimeMidnight);
-    long initalDelay = duration.getSeconds();
-
-    // Not sure about if TimerTask and ScheduledExecutorService should be doing the scheduling job here
-    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    scheduler.scheduleAtFixedRate(new TimerTask() {
-                                    @Override
-                                    public void run() {
-                                      resetMessageCount();
-                                    }
-                                  }, initalDelay,
-            24 * 60 * 60, TimeUnit.SECONDS);
-  }
-
-  /**
    * Removes any rate limit on the user
    */
   public void removeRateLimit() {
     this.rateLimit = null;
-    //Consider resetting the message count after this operation
-  }
-
-  /**
-   * Returns true if the user is able to send a message, false otherwise
-   */
-  public boolean canSendMessage() {
-    return (rateLimit == null || messageCount < rateLimit);
-  }
-
-  /**
-   * Increments the message count counter
-   */
-  public void incrementMessageCount() {
-    messageCount++;
-  }
-
-  /**
-   * Resets message count of the user
-   */
-  public void resetMessageCount() {
-    messageCount = 0;
   }
 }

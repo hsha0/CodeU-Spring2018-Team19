@@ -62,7 +62,7 @@ public class MessageStoreTest {
     assertEquals(MESSAGE_TWO, resultMessages.get(1));
   }
 
-  @Ignore
+  @Test
   public void testAddMessage() {
     UUID inputConversationId = UUID.randomUUID();
     Message inputMessage =
