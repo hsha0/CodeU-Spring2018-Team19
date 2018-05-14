@@ -63,7 +63,6 @@ public class User {
     this.bio = "";
     this.pictureURL = "";
     this.superUser = false;
-    this.rateLimit = null; //for clarity
   }
 
   /**
