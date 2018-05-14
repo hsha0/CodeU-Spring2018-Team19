@@ -92,6 +92,10 @@ public class ConversationStore {
     persistentStorageAgent.writeThrough(conversation);
   }
 
+  public void deleteConversation(Conversation conversation) {
+    conversations.remove(conversation);
+  }
+
   /** Check whether a Conversation title is already known to the application. */
   public boolean isTitleTaken(String title) {
     // This approach will be pretty slow if we have many Conversations.
