@@ -218,7 +218,7 @@ public class PersistentDataStore {
 
     // Retrieve all messages from the datastore.
     Query query = new Query("chat-messages");
-    query.setFilter(new Query.FilterPredicate("uuid", Query.FilterOperator.EQUAL, id.toString()));
+    query.setFilter(new Query.FilterPredicate("author_uuid", Query.FilterOperator.EQUAL, id.toString()));
     PreparedQuery results = datastore.prepare(query);
 
     int messageCounter = 0;

@@ -96,7 +96,7 @@ public class MessageStore {
           user = u;
         }
       }
-      if(user.getRateLimit()== null || user.getRateLimit() > persistentStorageAgent.getDailyMessageCountFor(message.getAuthorId())){
+      if(user.getRateLimit() == null || user.getRateLimit() > persistentStorageAgent.getDailyMessageCountFor(message.getAuthorId())){
         messages.add(message);
         persistentStorageAgent.writeThrough(message);
       }
