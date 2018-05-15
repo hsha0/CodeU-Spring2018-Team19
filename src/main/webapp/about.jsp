@@ -39,6 +39,15 @@
            <li>
              <code>Added Home and About page</code>
            </li>
+           <li>
+             <code>Added Text Cleaning and Text Customization</code>
+           </li>
+           <li>
+             <code>Added Profile Page for users with customization</code>
+           </li>
+           <li>
+             <code>Added Superuser privileges for performing administrative work</code>
+           </li>
          </ul>
        </div>
 
@@ -47,6 +56,15 @@
          <ul class = "list">
            <li>
              <code>All tests now passing</code>
+           </li>
+           <li>
+             <code>Enhanced performance when retrieving single users from database</code>
+           </li>
+           <li>
+             <code>Fixed bugs with profile page not allowing you to keep previous information</code>
+           </li>
+           <li>
+             <code>Tightied up Profile page jsp and CSS</code>
            </li>
          </ul>
        </div>

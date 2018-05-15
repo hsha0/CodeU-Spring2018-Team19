@@ -17,13 +17,13 @@ package codeu.model.store.persistence;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
-import codeu.model.store.persistence.PersistentDataStoreException;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.*;
+import com.google.appengine.repackaged.com.google.datastore.v1.PropertyFilter;
+import com.google.appengine.repackaged.com.google.protobuf.Timestamp;
+import com.google.apphosting.datastore.EntityV4;
+
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -204,6 +204,44 @@ public class PersistentDataStore {
     }
 
     return messages;
+  }
+
+  /**
+   * Loads all Message objects from the Datastore service and returns them in a List.
+   *
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public int getDailyMessageCountFor(UUID id) throws PersistentDataStoreException {
+
+    List<Message> messages = new ArrayList<>();
+
+    // Retrieve all messages from the datastore.
+    Query query = new Query("chat-messages");
+    query.setFilter(new Query.FilterPredicate("author_uuid", Query.FilterOperator.EQUAL, id.toString()));
+    PreparedQuery results = datastore.prepare(query);
+
+    int messageCounter = 0;
+    // Instant 24 hours ago.
+    Instant before24 = Instant.now().minusSeconds(24 * 60 * 60);
+
+    for (Entity entity : results.asIterable()) {
+      try {
+        Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+
+        // If the time of the message is after the time 24 hours before, inc daily message counter.
+        if(creationTime.isAfter(before24));
+          messageCounter++;
+
+      } catch (Exception e) {
+        // In a production environment, errors should be very rare. Errors which may
+        // occur include network errors, Datastore service errors, authorization errors,
+        // database entity definition mismatches, or service mismatches.
+        throw new PersistentDataStoreException(e);
+      }
+    }
+
+    return messageCounter;
   }
 
   /** Write a User object to the Datastore service. */
