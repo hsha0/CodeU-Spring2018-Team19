@@ -19,17 +19,14 @@ import codeu.model.data.Message;
 import codeu.model.data.User;
 import com.google.appengine.api.datastore.*;
 import com.google.appengine.repackaged.com.google.datastore.v1.PropertyFilter;
-import com.google.appengine.repackaged.com.google.datastore.v1.PropertyReference;
-import com.google.appengine.repackaged.com.google.datastore.v1.Value;
 import com.google.appengine.repackaged.com.google.protobuf.Timestamp;
+import com.google.apphosting.datastore.EntityV4;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
@@ -219,20 +216,33 @@ public class PersistentDataStore {
 
     List<Message> messages = new ArrayList<>();
 
-    // Retrieve all messages from the datastore for this user.
+    // Retrieve all messages from the datastore.
     Query query = new Query("chat-messages");
-    Instant twentyfourbefore = Instant.now().minus(24*60*60, ChronoUnit.SECONDS);
-    PropertyReference reference = PropertyReference.newBuilder().setName("creation").build();
-    Timestamp nowminus24 = Timestamp.newBuilder().setSeconds(twentyfourbefore.getEpochSecond()).build();
-    Value value = Value.newBuilder().setTimestampValue(nowminus24).build();
-    query.setFilter(Query.CompositeFilterOperator.and(new Query.FilterPredicate("uuid", Query.FilterOperator.EQUAL, id.toString()),
-            PropertyFilter.newBuilder().setProperty(reference).setOp(PropertyFilter.Operator.GREATER_THAN).setValue(value).build()));
+    query.setFilter(new Query.FilterPredicate("uuid", Query.FilterOperator.EQUAL, id.toString()));
     PreparedQuery results = datastore.prepare(query);
-    //make sure fetchoptions gets the full list in test
-    return results.asList(FetchOptions.Builder.withDefaults()).size();
+
+    int messageCounter = 0;
+    // Instant 24 hours ago.
+    Instant before24 = Instant.now().minusSeconds(24 * 60 * 60);
+
+    for (Entity entity : results.asIterable()) {
+      try {
+        Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+
+        // If the time of the message is after the time 24 hours before, inc daily message counter.
+        if(creationTime.isAfter(before24));
+          messageCounter++;
+
+      } catch (Exception e) {
+        // In a production environment, errors should be very rare. Errors which may
+        // occur include network errors, Datastore service errors, authorization errors,
+        // database entity definition mismatches, or service mismatches.
+        throw new PersistentDataStoreException(e);
+      }
+    }
+
+    return messageCounter;
   }
-
-
 
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
