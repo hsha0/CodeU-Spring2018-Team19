@@ -63,7 +63,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         String pic = UserStore.getInstance()
           .getUser(message.getAuthorId()).getPictureURL();
     %>
-      <li class = "Message"><img src = "<%= pic %>" class = "Avatar"/> <strong><a href = "/user?user=<%= author %>"><%= author %></a>:</strong> <%= message.getContent() %></li>
+      <li class = "message"><img src = "<%= pic %>" class = "avatar"/> <strong><a href = "/user?user=<%= author %>"><%= author %></a>:</strong> <%= message.getContent() %></li>
     <%
       }
     %>

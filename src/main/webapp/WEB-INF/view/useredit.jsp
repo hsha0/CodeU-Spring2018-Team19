@@ -16,14 +16,14 @@
 <%@ include file = "navbar.jsp" %>
 <% if(request.getSession().getAttribute("user") != null){ %>
 <form action="/useredit" method="POST">
-    <div class = "Profile">
-        <div class ="Identification">
-            <p id = "FullName">First Last : </p> <input type="text" name="first" value = "${user.getFirstName()}" id="first"> <input value = "${user.getLastName()}" type="text" name="last" id="last">
+    <div class = "profile">
+        <div class ="identification">
+            <p id = "fullName">First Last : </p> <input type="text" name="first" value = "${user.getFirstName()}" id="first"> <input value = "${user.getLastName()}" type="text" name="last" id="last">
         </div>
-        <div class = "ProfilePicture">
+        <div class = "profilePicture">
             <p>Profile Pic URL:</p> <input type="text" name="pictureurl" value = "${user.getPictureURL()}" id="pictureurl">
         </div>
-        <div class = "Additional">
+        <div class = "additional">
             <p>Age : </p> <input type = "number" name = "age" id = "age" value = "${user.getAge()}" >
             <p>E-Mail : </p> <input type = "text" name = "email" id = "email" value = "${user.getEmail()}" >
             <p>Phone : </p> <input type = "number" name = "phone" id = "phone" value = "${user.getPhoneNum()}" >

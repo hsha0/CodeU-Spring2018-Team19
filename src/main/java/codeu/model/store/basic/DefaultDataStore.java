@@ -56,6 +56,16 @@ public class DefaultDataStore {
    */
   private int DEFAULT_MESSAGE_COUNT = 100;
 
+  /**
+   * Default Bio text used when adding random users.
+   */
+  public static final String DEFAULT_BIO = "I am a User on the Team TNT Chat App.";
+
+  /**
+   * Default Picture text used when adding random users.
+   */
+  public static final String DEFAULT_PICTURE = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM6Yg1jflrE0m40KXTHyfFnfTQy9PnlCZwc0lqq3u7wHBJKccQ";
+
   private static DefaultDataStore instance = new DefaultDataStore();
 
   public static DefaultDataStore getInstance() {
@@ -105,8 +115,8 @@ public class DefaultDataStore {
 
     for (int i = 0; i < DEFAULT_USER_COUNT; i++) {
       User.Builder userBuilder = new User.Builder(UUID.randomUUID(), randomUsernames.get(i), BCrypt.hashpw("password", BCrypt.gensalt()), Instant.now());
-      userBuilder.setBio("I am a User on the Team TNT Chat App.");
-      userBuilder.setPictureURL("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM6Yg1jflrE0m40KXTHyfFnfTQy9PnlCZwc0lqq3u7wHBJKccQ");
+      userBuilder.setBio(DEFAULT_BIO);
+      userBuilder.setPictureURL(DEFAULT_PICTURE);
       User user = userBuilder.createUser();
       PersistentStorageAgent.getInstance().writeThrough(user);
       users.add(user);
