@@ -36,3 +36,4 @@ public class UserTest {
     Assert.assertEquals(creation, user.getCreationTime());
   }
 }
+

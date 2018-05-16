@@ -95,6 +95,7 @@ public class UserEditServlet extends HttpServlet {
     userBuilder.setPhoneNum(phoneNum);
     userBuilder.setBio(bio);
     userBuilder.setPictureURL(pictureURL);
+    userBuilder.setRateLimit(user.getRateLimit());
     user = userBuilder.createUser();
 
     userStore.updateUser(user);
