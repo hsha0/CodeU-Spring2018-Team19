@@ -19,6 +19,7 @@ import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentDataStore;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * This class is the interface between the application and PersistentDataStore, which handles
@@ -87,6 +88,10 @@ public class PersistentStorageAgent {
    */
   public List<Message> loadMessages() throws PersistentDataStoreException {
     return persistentDataStore.loadMessages();
+  }
+
+  public int getDailyMessageCountFor(UUID id) throws PersistentDataStoreException {
+    return persistentDataStore.getDailyMessageCountFor(id);
   }
 
   /** Write a User object to the Datastore service. */
