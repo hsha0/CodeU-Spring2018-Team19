@@ -104,6 +104,20 @@ public class UserStore {
     persistentStorageAgent.writeThrough(user);
   }
 
+  /** Update user details and stores it in the database */
+  public void updateUser(User user){
+    for (User u : users) {
+      if (u.getId().equals(user.getId())) {
+        users.remove(u);
+        users.add(0, user);//ugly but works
+        persistentStorageAgent.writeThrough(user);
+        return;
+      }
+    }
+    users.add(user);
+    persistentStorageAgent.writeThrough(user);
+  }
+
   /** Return true if the given username is known to the application. */
   public boolean isUserRegistered(String username) {
     for (User user : users) {
