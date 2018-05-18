@@ -94,6 +94,7 @@ public class ConversationStore {
 
   public void deleteConversation(Conversation conversation) {
     conversations.remove(conversation);
+    persistentStorageAgent.delete(conversation);
   }
 
   /** Check whether a Conversation title is already known to the application. */

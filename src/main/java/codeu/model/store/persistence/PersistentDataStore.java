@@ -19,12 +19,7 @@ import codeu.model.data.Message;
 import codeu.model.data.User;
 import com.google.appengine.api.datastore.*;
 
-import com.google.appengine.repackaged.com.google.datastore.v1.PropertyFilter;
-import com.google.appengine.repackaged.com.google.protobuf.Timestamp;
-import com.google.apphosting.datastore.EntityV4;
-
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -38,7 +33,7 @@ public class PersistentDataStore {
 
   // Handle to Google AppEngine's Datastore service.
   private DatastoreService datastore;
-
+  private KeyFactory ConvoFactory;
   /**
    * Constructs a new PersistentDataStore and sets up its state to begin loading objects from the
    * Datastore service.
@@ -273,11 +268,17 @@ public class PersistentDataStore {
    * Write a Conversation object to the Datastore service.
    */
   public void writeThrough(Conversation conversation) {
-    Entity conversationEntity = new Entity("chat-conversations");
+    Entity conversationEntity = new Entity("chat-conversations", conversation.getTitle());
     conversationEntity.setProperty("uuid", conversation.getId().toString());
     conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
     conversationEntity.setProperty("title", conversation.getTitle());
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
     datastore.put(conversationEntity);
+  }
+
+  public void delete(Conversation conversation){
+    String convoTitle = conversation.getTitle();
+    Key key = KeyFactory.createKey("chat-conversations", convoTitle);
+    datastore.delete(key);
   }
 }

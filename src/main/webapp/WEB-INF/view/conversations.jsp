@@ -68,7 +68,7 @@
         if(u != null){
             boolean check = (boolean) request.getSession().getAttribute("isSuperUser");
             if(check){ %>
-            <a href=""onclick="deleteConversation(<%=conversation.getId()%>)">delete</a>
+            <a href=""onclick="deleteConversation(<%=conversation.getTitle()%>)">X</a>
         <% }} %>
       </li>
     <%
@@ -82,3 +82,17 @@
   </div>
 </body>
 </html>
+<script>
+function deleteConversation(String convoTitle) {
+  var url = "http://localhost:8080/conversations/";
+  var xhr = new XMLHttpRequest();
+  xhr.open("DELETE", url + convoTitle, true);
+  xhr.onload = function () {
+    if (xhr.readyState != 4 || xhr.status != "200") {
+      console.error("Error deleting conversation");
+      console.error(xhr.responseText);
+    }
+  }
+  xhr.send(null);
+}
+</script>
