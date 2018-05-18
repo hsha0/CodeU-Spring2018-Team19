@@ -15,7 +15,10 @@
 package codeu.model.store.basic;
 
 import codeu.model.data.Message;
+import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
+
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -84,8 +87,22 @@ public class MessageStore {
 
   /** Add a new message to the current set of messages known to the application. */
   public void addMessage(Message message) {
-    messages.add(message);
-    persistentStorageAgent.writeThrough(message);
+    //This is necessary due to the bugs with loaduser(username) in persistent data store.
+    User user = new User(message.getId(), "fake", "fake", Instant.now());
+    try {
+      List<User> users = persistentStorageAgent.loadUsers();
+      for (User u: users) {
+        if(u.getId() == message.getAuthorId()){
+          user = u;
+        }
+      }
+      if(user.getRateLimit() == null || user.getRateLimit() > persistentStorageAgent.getDailyMessageCountFor(message.getAuthorId())){
+        messages.add(message);
+        persistentStorageAgent.writeThrough(message);
+      }
+    }catch (Exception e){
+      e.printStackTrace();
+    }
   }
 
   /** Access the current set of Messages within the given Conversation. */

@@ -211,4 +211,37 @@ public class PersistentDataStoreTest {
         Assert.assertEquals(contentTwo, resultMessageTwo.getContent());
         Assert.assertEquals(creationTwo, resultMessageTwo.getCreationTime());
     }
+
+    @Test
+    public void countCorrectMessage24Hours() throws PersistentDataStoreException {
+        UUID idOne = UUID.randomUUID();
+        UUID conversationOne = UUID.randomUUID();
+        UUID authorOne = UUID.randomUUID();
+        String contentOne = "test content one";
+        Instant creationOne = Instant.now();
+        Message inputMessageOne =
+                new Message(idOne, conversationOne, authorOne, contentOne, creationOne);
+
+        UUID idTwo = UUID.randomUUID();
+        UUID conversationTwo = UUID.randomUUID();
+        UUID authorTwo = UUID.randomUUID();
+        String contentTwo = "test content one";
+        Instant creationTwo = Instant.now();
+        Message inputMessageTwo =
+                new Message(idTwo, conversationTwo, authorTwo, contentTwo, creationTwo);
+
+        // save
+        persistentDataStore.writeThrough(inputMessageOne);
+        persistentDataStore.writeThrough(inputMessageTwo);
+
+        // load
+        int count1 = persistentDataStore.getDailyMessageCountFor(authorOne);
+        int count2 = persistentDataStore.getDailyMessageCountFor(authorTwo);
+
+        // assert count = 1
+        Assert.assertTrue(count1 == 1);
+        Assert.assertTrue(count2 == 1);
+
+    }
+
 }
