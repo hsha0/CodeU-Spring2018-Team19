@@ -68,7 +68,7 @@
         if(u != null){
             boolean check = (boolean) request.getSession().getAttribute("isSuperUser");
             if(check){ %>
-            <a href> delete </a>
+            <a href=""onclick="deleteConversation(<%=conversation.getId()%>)">delete</a>
         <% }} %>
       </li>
     <%
