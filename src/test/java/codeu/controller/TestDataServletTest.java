@@ -15,6 +15,7 @@
 package codeu.controller;
 
 import codeu.model.data.User;
+import codeu.model.data.User.Builder;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
@@ -49,7 +50,7 @@ public class TestDataServletTest {
     String name = "test_username";
     Instant creation = Instant.now();
     String password = "password";
-    User superUser = User.Builder(id, name, password, creation).setSuperUser(true).createUser();
+    User superUser = Builder(id, name, password, creation).setSuperUser(true).createUser();
 
     mockSession = Mockito.mock(HttpSession.class);
     Mockito.when(mockSession.getAttribute("user")).thenReturn(superUser);
