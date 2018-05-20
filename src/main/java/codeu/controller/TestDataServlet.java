@@ -76,9 +76,21 @@ public class TestDataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    User currentUser = (User) request.getSession().getAttribute("user");
-    if (currentUser.isSuperUser()) {
+    String username = (String) request.getSession().getAttribute("user");
+
+    User user = userStore.getUser(username);
+    if (user == null) {
+      // user was not found, don't let them go to profile edit page
+      response.sendRedirect("/login");
+      return;
+    }
+
+    if (user.isSuperUser()) {
       request.getRequestDispatcher("/WEB-INF/view/testdata.jsp").forward(request, response);
+    }
+    else {
+      //What to do here?
+      response.sendError(409, "You are not an admin.");
     }
   }
 
@@ -89,8 +101,16 @@ public class TestDataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    User currentUser = (User) request.getSession().getAttribute("user");
-    if (currentUser.isSuperUser()) {
+    String username = (String) request.getSession().getAttribute("user");
+
+    User user = userStore.getUser(username);
+    if (user == null) {
+      // user was not found, don't let them go to profile edit page
+      response.sendRedirect("/login");
+      return;
+    }
+
+    if (user.isSuperUser()) {
       String confirmButton = request.getParameter("confirm");
 
       if (confirmButton != null) {
