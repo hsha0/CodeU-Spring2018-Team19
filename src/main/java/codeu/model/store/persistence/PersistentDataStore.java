@@ -278,6 +278,7 @@ public class PersistentDataStore {
 
   public void delete(Conversation conversation){
     String convoTitle = conversation.getTitle();
+    System.out.println(convoTitle);
     Key key = KeyFactory.createKey("chat-conversations", convoTitle);
     datastore.delete(key);
   }

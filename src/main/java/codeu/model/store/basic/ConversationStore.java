@@ -92,6 +92,7 @@ public class ConversationStore {
     persistentStorageAgent.writeThrough(conversation);
   }
 
+  /** Delete conversation from the current set of conversations known to the application. */
   public void deleteConversation(Conversation conversation) {
     conversations.remove(conversation);
     persistentStorageAgent.delete(conversation);

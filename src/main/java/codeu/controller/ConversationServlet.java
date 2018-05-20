@@ -121,14 +121,14 @@ public class ConversationServlet extends HttpServlet {
     response.sendRedirect("/chat/" + conversationTitle);
   }
 
+  @Override
   public void doDelete(HttpServletRequest request, HttpServletResponse response)
           throws IOException, ServletException {
 
-    String username = request.getParameter("username");
+    String username = (String) request.getSession().getAttribute("user");
     User user = userStore.getUser(username);
     if(user.isSuperUser()){
-      String requestUrl = request.getRequestURI();
-      String conversationTitle = (requestUrl.substring("/conversations/".length()));
+      String conversationTitle = request.getParameter("conversation");
       Conversation conversation = conversationStore.getConversationWithTitle(conversationTitle);
       conversationStore.deleteConversation(conversation);
     }
