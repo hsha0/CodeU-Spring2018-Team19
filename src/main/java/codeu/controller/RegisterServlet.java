@@ -8,6 +8,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import codeu.model.store.basic.DefaultDataStore;
 import codeu.model.store.basic.UserStore;
 import codeu.model.data.User;
 import org.mindrot.jbcrypt.BCrypt;
@@ -80,12 +82,16 @@ public class RegisterServlet extends HttpServlet {
       User user = new User(UUID.randomUUID(), username, passwordHash, Instant.now());
       User.Builder userBuilder = new User.Builder(user.getId(), user.getName(), user.getPassword(), user.getCreationTime());
       userBuilder.setSuperUser(true);
+      userBuilder.setBio(DefaultDataStore.DEFAULT_BIO);
+      userBuilder.setPictureURL(DefaultDataStore.DEFAULT_PICTURE);
       user = userBuilder.createUser();
       userStore.addUser(user); 
     }
     else {
-      User user = new User(UUID.randomUUID(), username, passwordHash, Instant.now());
-      userStore.addUser(user);
+      User.Builder userBuilder = new User.Builder(UUID.randomUUID(), username, passwordHash, Instant.now());
+      userBuilder.setBio(DefaultDataStore.DEFAULT_BIO);
+      userBuilder.setPictureURL(DefaultDataStore.DEFAULT_PICTURE);
+      userStore.addUser(userBuilder.createUser());
     }
     response.sendRedirect("/login");
     
