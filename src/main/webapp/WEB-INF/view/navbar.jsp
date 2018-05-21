@@ -9,4 +9,5 @@
   <% } %>
   <a href="/about.jsp">About</a>
   <a href="/testdata">Load Test Data</a>
+  <a href="/logout">Logout</a>
 </nav>
