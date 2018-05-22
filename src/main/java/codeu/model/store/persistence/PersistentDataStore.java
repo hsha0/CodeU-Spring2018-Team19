@@ -62,8 +62,35 @@ public class PersistentDataStore {
         String userName = (String) entity.getProperty("username");
         String password = (String) entity.getProperty("password");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        User user = new User(uuid, userName, password, creationTime);
-        users.add(user);
+        //sloppy
+        Integer age = null;
+        if( ((String) entity.getProperty("age") ).compareTo("null") != 0 ) {
+          age = Integer.parseInt((String) entity.getProperty("age"));
+        }
+        String first = (String) entity.getProperty("first");
+        String last = (String) entity.getProperty("last");
+        String email = (String) entity.getProperty("email");
+        String phone = (String) entity.getProperty("phone");
+        String bio = (String) entity.getProperty("bio");
+        String pictureURL = (String) entity.getProperty("pictureURL");
+        Boolean isSuper = (Boolean) entity.getProperty("super");
+        //sloppy
+        Integer rate = null;
+        if( ((String) entity.getProperty("rate") ).compareTo("null") != 0 ) {
+          rate = Integer.parseInt((String) entity.getProperty("rate"));
+        }
+
+        User.Builder builder = new User.Builder(uuid, userName, password, creationTime);
+        builder.setAge(age);
+        builder.setFirstName(first);
+        builder.setLastName(last);
+        builder.setEmail(email);
+        builder.setPhoneNum(phone);
+        builder.setBio(bio);
+        builder.setPictureURL(pictureURL);
+        builder.setSuperUser(isSuper);
+        builder.setRateLimit(rate);
+        users.add(builder.createUser());
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
@@ -75,7 +102,7 @@ public class PersistentDataStore {
     return users;
   }
 
-  /**
+  /** Deprecated for now
    * Loads unique User object using UUID from the Datastore service and returns it.
    *
    * @throws PersistentDataStoreException if an error was detected during the load from the
@@ -105,7 +132,7 @@ public class PersistentDataStore {
     }
   }
 
-  /**
+  /** Deprecated for now
    * Loads unique User object using username from the Datastore service and returns it.
    *
    * @throws PersistentDataStoreException if an error was detected during the load from the
@@ -248,6 +275,15 @@ public class PersistentDataStore {
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("password", user.getPassword());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
+    userEntity.setProperty("age", "" + user.getAge());
+    userEntity.setProperty("first", user.getFirstName());
+    userEntity.setProperty("last", user.getLastName());
+    userEntity.setProperty("email", user.getEmail());
+    userEntity.setProperty("phone", user.getPhoneNum());
+    userEntity.setProperty("bio", user.getBio());
+    userEntity.setProperty("pictureURL", user.getPictureURL());
+    userEntity.setProperty("super", user.isSuperUser());
+    userEntity.setProperty("rate","" +user.getRateLimit());
     datastore.put(userEntity);
   }
 
