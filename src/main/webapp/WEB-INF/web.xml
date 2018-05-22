@@ -53,7 +53,7 @@
 
   <servlet-mapping>
     <servlet-name>ConversationServlet</servlet-name>
-    <url-pattern>/conversations</url-pattern>
+    <url-pattern>/conversations/*</url-pattern>
   </servlet-mapping>
 
   <servlet>

@@ -1,18 +1,18 @@
 package codeu.controller;
 
-import java.util.ArrayList;
-import java.util.UUID;
-import java.time.Instant;
-import java.io.IOException;
+import codeu.model.data.User;
+import codeu.model.store.basic.DefaultDataStore;
+import codeu.model.store.basic.UserStore;
+import org.mindrot.jbcrypt.BCrypt;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import codeu.model.store.basic.DefaultDataStore;
-import codeu.model.store.basic.UserStore;
-import codeu.model.data.User;
-import org.mindrot.jbcrypt.BCrypt;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Servlet class responsible for user registration.

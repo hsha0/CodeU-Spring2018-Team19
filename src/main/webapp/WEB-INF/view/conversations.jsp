@@ -68,7 +68,7 @@
         if(u != null){
             boolean check = (boolean) request.getSession().getAttribute("isSuperUser");
             if(check){ %>
-            <a href> delete </a>
+            <a href="#"onclick="deleteConversation('<%=conversation.getTitle()%>')">X</a>
         <% }} %>
       </li>
     <%
@@ -82,3 +82,20 @@
   </div>
 </body>
 </html>
+<script>
+function deleteConversation(convoTitle) {
+  var url = "http://gcu-tnt.appspot.com/conversations?conversation=";
+  var xhr = new XMLHttpRequest();
+  console.log("Hello");
+
+  xhr.onload = function () {
+    if (xhr.readyState != 4 || xhr.status != "200") {
+      console.error("Error deleting conversation");
+      console.error(xhr.responseText);
+    }
+  }
+  xhr.open("DELETE", url + convoTitle, true);
+  xhr.send(null);
+  location.reload(true);
+}
+</script>
