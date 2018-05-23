@@ -15,15 +15,15 @@
 <body>
     <%@ include file = "navbar.jsp" %>
     <% if(request.getSession().getAttribute("user") != null){ %>
-    <div class = "Profile">
-        <div class ="Identification">
-            <p id = "Username"> ${user.getName()}</p>
-            <p id = "FullName">${user.getFirstName()} ${user.getLastName()}</p>
+    <div class = "profile">
+        <div class ="identification">
+            <p id = "username"> ${user.getName()}</p>
+            <p id = "fullName">${user.getFirstName()} ${user.getLastName()}</p>
         </div>
-        <div class = "ProfilePicture">
+        <div class = "profilePicture">
             <img src = "${user.getPictureURL()}"/>
         </div>
-        <div class = "Additional">
+        <div class = "additional">
             <p>Age : ${user.getAge()} </p>
             <p>E-Mail : ${user.getEmail()} </p>
             <p>Phone : ${user.getPhoneNum()}</p>
