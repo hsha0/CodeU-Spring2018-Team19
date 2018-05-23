@@ -5,7 +5,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import java.util.List;
 import codeu.model.store.basic.UserStore;
 import codeu.model.data.User;
 
@@ -40,7 +40,9 @@ public class AdminServlet extends HttpServlet {
    */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-      
+    List<User> users = userStore.getAllUsers();
+    request.setAttribute("users", users);
+    request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);  
   }
   
   @Override
