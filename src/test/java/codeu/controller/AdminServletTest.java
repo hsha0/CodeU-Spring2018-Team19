@@ -35,21 +35,26 @@ public class AdminServletTest {
     mockRequest = Mockito.mock(HttpServletRequest.class);
     mockSession = Mockito.mock(HttpSession.class);
     Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
-
     mockResponse = Mockito.mock(HttpServletResponse.class);
     mockRequestDispatcher = Mockito.mock(RequestDispatcher.class);
     Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/admin.jsp"))
             .thenReturn(mockRequestDispatcher);
 
-    mockUserStore = Mockito.mock(UserStore.class);  
+    mockUserStore = Mockito.mock(UserStore.class); 
+    adminServlet.setUserStore(mockUserStore);
   }
   
   @Test
   public void testDoGet() throws IOException, ServletException {
-    List<User> fakeUsers = new ArrayList<>();
-    fakeUsers.add(new User(UUID.randomUUID(), "test username", "test password", Instant.now()));
+    User user = new User(UUID.randomUUID(), "username", "password", Instant.now());
+    User.Builder userBuilder = new User.Builder(user.getId(), user.getName(), user.getPassword(), user.getCreationTime());
+    userBuilder.setSuperUser(true);
+    user = userBuilder.createUser();
     
-    Mockito.when(mockRequest.getSession().getAttribute("user")).thenReturn("Han");
+    Mockito.when(mockRequest.getSession().getAttribute("user")).thenReturn("username");
+    Mockito.when(mockUserStore.getUser("username")).thenReturn(user);
+    List<User> fakeUsers = new ArrayList<>();
+    fakeUsers.add(user);     
     Mockito.when(mockUserStore.getAllUsers()).thenReturn(fakeUsers);
     
     adminServlet.doGet(mockRequest, mockResponse);
@@ -57,4 +62,42 @@ public class AdminServletTest {
     Mockito.verify(mockRequest).setAttribute("users", fakeUsers);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
+  
+  @Test
+  public void testDoGetInvalidUsername() throws IOException, ServletException {
+    
+    Mockito.when(mockRequest.getSession().getAttribute("user")).thenReturn(null);
+    
+    adminServlet.doGet(mockRequest, mockResponse);
+    
+    Mockito.verify(mockResponse).sendRedirect("/login");
+  }
+  
+  @Test
+  public void testDoGetNonexistingUser() throws IOException, ServletException {
+    
+    Mockito.when(mockRequest.getSession().getAttribute("user")).thenReturn("username");
+    Mockito.when(mockUserStore.getUser("username")).thenReturn(null);
+    
+    adminServlet.doGet(mockRequest, mockResponse);
+    
+    Mockito.verify(mockResponse).sendRedirect("/login");
+    
+  }
+  
+  @Test
+  public void testDoGetNotSuperUser() throws IOException, ServletException {
+    User user = new User(UUID.randomUUID(), "username", "password", Instant.now());
+    
+    Mockito.when(mockRequest.getSession().getAttribute("user")).thenReturn("username");
+    Mockito.when(mockUserStore.getUser("username")).thenReturn(user);
+    List<User> fakeUsers = new ArrayList<>();
+    fakeUsers.add(user);     
+    Mockito.when(mockUserStore.getAllUsers()).thenReturn(fakeUsers);
+    
+    adminServlet.doGet(mockRequest, mockResponse);
+    
+    Mockito.verify(mockResponse).sendRedirect("/login");
+  }
+  
 }
