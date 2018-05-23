@@ -40,6 +40,26 @@ public class AdminServlet extends HttpServlet {
    */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    
+    String username = (String) request.getSession().getAttribute("user");
+    if (username == null) {
+      // user is not logged in, don't let them go to admin page
+      response.sendRedirect("/login");
+      return;
+    }
+    
+    User user = userStore.getUser(username);
+    if (user == null) {
+      // user was not found, don't let them go to admin page
+      response.sendRedirect("/login");
+      return;
+    }
+    
+    if (user.isSuperUser() == false) {
+      //user is not super user, don't let them go to admin page
+      response.sendRedirect("/login");
+    }
+    
     List<User> users = userStore.getAllUsers();
     request.setAttribute("users", users);
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);  
@@ -67,7 +87,7 @@ public class AdminServlet extends HttpServlet {
     User user = userStore.getUser(username);
     if (admin.isSuperUser()) {
       if (banrate.compareTo("ban") == 0) {
-        userStore.deleteUser(user);
+        //userStore.deleteUser(user);
       } else {
         Integer rate = Integer.parseInt(banrate);
         user.setRateLimit(rate);
