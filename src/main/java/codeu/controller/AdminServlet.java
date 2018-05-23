@@ -87,7 +87,7 @@ public class AdminServlet extends HttpServlet {
     User user = userStore.getUser(username);
     if (admin.isSuperUser()) {
       if (banrate.compareTo("ban") == 0) {
-        //userStore.deleteUser(user);
+        userStore.deleteUser(user);
       } else {
         Integer rate = Integer.parseInt(banrate);
         user.setRateLimit(rate);
