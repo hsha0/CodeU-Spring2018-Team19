@@ -8,9 +8,12 @@
     <a href="/register">Register</a>
   <% } %>
   <a href="/about.jsp">About</a>
-  <% User currentUser = (User) request.getSession().getAttribute("user");
-      if (currentUser.isSuperUser()) { %>
-      <a href="/testdata">Load Test Data</a>
-  <% }
+  <% String u = (String) request.getSession().getAttribute("user");
+     if(u != null){
+         boolean check = (boolean) request.getSession().getAttribute("isSuperUser");
+         if(check){ %>
+         <a href="/testdata">Load Test Data</a>
+      <% } %>
+  <% } %>
 
 </nav>
