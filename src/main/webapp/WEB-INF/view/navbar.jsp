@@ -8,8 +8,8 @@
     <a href="/register">Register</a>
   <% } %>
   <a href="/about.jsp">About</a>
-  <% String u = (String) request.getSession().getAttribute("user");
-     if(u != null){
+  <% String usr = (String) request.getSession().getAttribute("user");
+     if(usr != null){
          boolean check = (boolean) request.getSession().getAttribute("isSuperUser");
          if(check){ %>
          <a href="/testdata">Load Test Data</a>
