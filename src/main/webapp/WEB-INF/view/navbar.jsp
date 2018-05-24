@@ -9,5 +9,7 @@
   <% } %>
   <a href="/about.jsp">About</a>
   <a href="/testdata">Load Test Data</a>
-  <a href="/logout">Logout</a>
+  <% if(request.getSession().getAttribute("user") != null){ %>
+    <a href="/logout">Logout</a>
+  <% } %>
 </nav>
