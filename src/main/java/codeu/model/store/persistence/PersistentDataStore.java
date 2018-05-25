@@ -19,6 +19,10 @@ import codeu.model.data.Message;
 import codeu.model.data.User;
 import com.google.appengine.api.datastore.*;
 
+import com.google.appengine.repackaged.com.google.datastore.v1.PropertyFilter;
+import com.google.appengine.repackaged.com.google.protobuf.Timestamp;
+import com.google.apphosting.datastore.EntityV4;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -275,10 +279,8 @@ public class PersistentDataStore {
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
     datastore.put(conversationEntity);
   }
-
   public void delete(Conversation conversation){
     String convoTitle = conversation.getTitle();
-    System.out.println(convoTitle);
     Key key = KeyFactory.createKey("chat-conversations", convoTitle);
     datastore.delete(key);
   }

@@ -8,6 +8,7 @@
     <a href="/register">Register</a>
   <% } %>
   <a href="/about.jsp">About</a>
+
   <% String usr = (String) request.getSession().getAttribute("user");
      if(usr != null){
          boolean check = (boolean) request.getSession().getAttribute("isSuperUser");
@@ -15,6 +16,9 @@
          <a href="/testdata">Load Test Data</a>
       <% } %>
   <% } %>
+  <% if(request.getSession().getAttribute("user") != null){ %>
+      <a href="/logout">Logout</a>
+   <% } %>
 
 </nav>
 
