@@ -14,10 +14,14 @@
 
 package codeu.controller;
 
+import codeu.model.data.User;
+import codeu.model.data.User.Builder;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
+import java.time.Instant;
+import java.util.UUID;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -42,8 +46,16 @@ public class TestDataServletTest {
   public void setup() {
     testDataServlet = new TestDataServlet();
 
-    mockRequest = Mockito.mock(HttpServletRequest.class);
+    UUID id = UUID.randomUUID();
+    String name = "test_username";
+    Instant creation = Instant.now();
+    String password = "password";
+    User superUser = new User.Builder(id, name, password, creation).setSuperUser(true).createUser();
+
     mockSession = Mockito.mock(HttpSession.class);
+    Mockito.when(mockSession.getAttribute("user")).thenReturn(name);
+
+    mockRequest = Mockito.mock(HttpServletRequest.class);
     Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
 
     mockResponse = Mockito.mock(HttpServletResponse.class);
@@ -58,6 +70,7 @@ public class TestDataServletTest {
     testDataServlet.setMessageStore(mockMessageStore);
 
     mockUserStore = Mockito.mock(UserStore.class);
+    Mockito.when(mockUserStore.getUser(name)).thenReturn(superUser);
     testDataServlet.setUserStore(mockUserStore);
   }
 
