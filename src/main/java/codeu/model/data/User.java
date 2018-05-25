@@ -82,7 +82,7 @@ public class User {
    * @param rateLimit     the rateLimit of the user
    */
   private User(UUID newId, String newName, String newPassword, Instant newCreation, Integer newAge, String newFirstName,
-               String newLastName, String newEmail, String newPhoneNum, String newBio, String newPictureURL, boolean newSuperUser, Integer rateLimit, Integer messageCount) {
+               String newLastName, String newEmail, String newPhoneNum, String newBio, String newPictureURL, boolean newSuperUser, Integer rateLimit) {
     this.id = newId;
     this.name = newName;
     this.password = newPassword;
@@ -95,6 +95,7 @@ public class User {
     this.bio = newBio;
     this.pictureURL = newPictureURL;
     this.superUser = newSuperUser;
+    this.rateLimit = rateLimit;
   }
 
   public static class Builder {
@@ -111,7 +112,6 @@ public class User {
     private String nestedPictureURL;
     private boolean nestedSuperUser;
     private Integer nestedRateLimit;
-    private Integer nestedMessageCount;
 
 
     public Builder(final UUID newId, final String newName, final String newPassword, final Instant newCreation) {
@@ -119,8 +119,6 @@ public class User {
       this.nestedName = newName;
       this.nestedPassword = newPassword;
       this.nestedCreation = newCreation;
-      this.nestedRateLimit = null;
-      this.nestedMessageCount = 0;
     }
 
     public Builder setId(UUID newId) {
@@ -188,14 +186,9 @@ public class User {
       return this;
     }
 
-    public Builder setMessageCount(Integer newMessageCount) {
-      this.nestedMessageCount = newMessageCount;
-      return this;
-    }
-
     public User createUser() {
       return new User(nestedId, nestedName, nestedPassword, nestedCreation, nestedAge, nestedFirstName, nestedLastName,
-              nestedEmail, nestedPhoneNum, nestedBio, nestedPictureURL, nestedSuperUser, nestedRateLimit, nestedMessageCount);
+              nestedEmail, nestedPhoneNum, nestedBio, nestedPictureURL, nestedSuperUser, nestedRateLimit);
     }
   }
 

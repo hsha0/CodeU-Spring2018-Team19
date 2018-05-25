@@ -43,12 +43,13 @@ public class PersistentDataStoreTest {
         UUID idOne = UUID.randomUUID();
         String nameOne = "test_username_one";
         Instant creationOne = Instant.ofEpochMilli(1000);
-        User inputUserOne = new User(idOne, nameOne, "test_password", creationOne);
+        //Do I need to test all user attr?
+        User inputUserOne = new User.Builder(idOne, nameOne, "test_password", creationOne).setAge(65).setRateLimit(70).createUser();
 
         UUID idTwo = UUID.randomUUID();
         String nameTwo = "test_username_two";
         Instant creationTwo = Instant.ofEpochMilli(2000);
-        User inputUserTwo = new User(idTwo, nameTwo, "test_password", creationTwo);
+        User inputUserTwo = new User.Builder(idTwo, nameTwo, "test_password", creationTwo).setAge(65).setRateLimit(70).createUser();;
 
         // save
         persistentDataStore.writeThrough(inputUserOne);
@@ -62,12 +63,16 @@ public class PersistentDataStoreTest {
         Assert.assertEquals(idOne, resultUserOne.getId());
         Assert.assertEquals(nameOne, resultUserOne.getName());
         Assert.assertEquals("test_password", resultUserOne.getPassword());
+        Assert.assertTrue(65 == resultUserOne.getAge());
+        Assert.assertTrue(70 == resultUserOne.getRateLimit());
         Assert.assertEquals(creationOne, resultUserOne.getCreationTime());
 
         User resultUserTwo = resultUsers.get(1);
         Assert.assertEquals(idTwo, resultUserTwo.getId());
         Assert.assertEquals(nameTwo, resultUserTwo.getName());
         Assert.assertEquals("test_password", resultUserTwo.getPassword());
+        Assert.assertTrue(65 == resultUserOne.getAge());
+        Assert.assertTrue(70 == resultUserOne.getRateLimit());
         Assert.assertEquals(creationTwo, resultUserTwo.getCreationTime());
     }
 
