@@ -40,7 +40,7 @@ public class User {
   private final String pictureURL;
   private final boolean superUser;
   private Integer rateLimit;
-  private final boolean Banned;
+  private boolean Banned;
 
   /**
    * Constructs a new User.
@@ -313,6 +313,14 @@ public class User {
   public void removeRateLimit() {
     this.rateLimit = null;
   }
+  
+  /**
+   * Ban a user
+   */
+  public void ban(boolean newBan) {
+    this.Banned = newBan;
+  }
+  
   
   /**
    * Returns true if this user is banned, false otherwise
