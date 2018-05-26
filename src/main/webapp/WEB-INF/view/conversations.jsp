@@ -15,6 +15,8 @@
 --%>
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.Conversation" %>
+<%@ page import="codeu.model.data.User" %>
+<%@ page import = "codeu.model.store.basic.UserStore" %>
 
 <!DOCTYPE html>
 <html>
@@ -61,7 +63,14 @@
       for(Conversation conversation : conversations){
     %>
       <li><a href="/chat/<%= conversation.getTitle() %>">
-        <%= conversation.getTitle() %></a></li>
+        <%= conversation.getTitle() %></a>
+        <% String u = (String) request.getSession().getAttribute("user");
+        if(u != null){
+            boolean check = (boolean) request.getSession().getAttribute("isSuperUser");
+            if(check){ %>
+            <a href="#"onclick="deleteConversation('<%=conversation.getTitle()%>')">X</a>
+        <% }} %>
+      </li>
     <%
       }
     %>
@@ -73,3 +82,20 @@
   </div>
 </body>
 </html>
+<script>
+function deleteConversation(convoTitle) {
+  var url = "http://gcu-tnt.appspot.com/conversations?conversation=";
+  var xhr = new XMLHttpRequest();
+  console.log("Hello");
+
+  xhr.onload = function () {
+    if (xhr.readyState != 4 || xhr.status != "200") {
+      console.error("Error deleting conversation");
+      console.error(xhr.responseText);
+    }
+  }
+  xhr.open("DELETE", url + convoTitle, true);
+  xhr.send(null);
+  location.reload(true);
+}
+</script>
