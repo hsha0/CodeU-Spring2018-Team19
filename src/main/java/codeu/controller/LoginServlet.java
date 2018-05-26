@@ -71,13 +71,19 @@ public class LoginServlet extends HttpServlet {
 
     if (userStore.isUserRegistered(username)) {
       User user = userStore.getUser(username);
-      if (BCrypt.checkpw(password, user.getPassword())) {
-        request.getSession().setAttribute("user", username);
-        request.getSession().setAttribute("isSuperUser", user.isSuperUser());
-        response.sendRedirect("/conversations");
-      } else {
-        request.setAttribute("error", "Invalid password.");
+      if (user.isBanned()) {
+        request.setAttribute("error", "Sorry, you are banned from using this chat app.");
         request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+      }
+      else {
+        if (BCrypt.checkpw(password, user.getPassword())) {
+          request.getSession().setAttribute("user", username);
+          request.getSession().setAttribute("isSuperUser", user.isSuperUser());
+          response.sendRedirect("/conversations");
+        } else {
+          request.setAttribute("error", "Invalid password.");
+          request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+        }
       }
     }
 
@@ -85,7 +91,6 @@ public class LoginServlet extends HttpServlet {
       request.setAttribute("error", "That username was not found.");
       request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
     }
-
   }
 
 }

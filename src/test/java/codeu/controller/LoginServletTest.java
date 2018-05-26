@@ -118,4 +118,31 @@ public class LoginServletTest {
     Mockito.verify(mockRequest).setAttribute("error", "Invalid password.");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
+  
+  @Test
+  public void testDoPost_ExistingUser_Banned() throws IOException, ServletException {
+    Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
+    Mockito.when(mockRequest.getParameter("password")).thenReturn(BCrypt.hashpw("test password", BCrypt.gensalt()));
+
+    UserStore mockUserStore = Mockito.mock(UserStore.class);
+    Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
+    User.Builder userBuilder  = new User.Builder(UUID.randomUUID(), "test username", BCrypt.hashpw("test password", BCrypt.gensalt()),
+        Instant.EPOCH);
+    userBuilder.setBanned(true);
+    User user = userBuilder.createUser();
+    
+    Mockito.when(mockUserStore.getUser("test username")).thenReturn(user);
+
+    loginServlet.setUserStore(mockUserStore);
+
+    HttpSession mockSession = Mockito.mock(HttpSession.class);
+    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
+
+    loginServlet.doPost(mockRequest, mockResponse);
+
+    Mockito.verify(mockUserStore, Mockito.never()).addUser(Mockito.any(User.class));
+
+    Mockito.verify(mockRequest).setAttribute("error", "Sorry, you are banned from using this chat app.");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
 }

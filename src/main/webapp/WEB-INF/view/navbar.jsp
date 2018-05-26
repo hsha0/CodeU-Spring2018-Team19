@@ -15,6 +15,6 @@
          <a href="/testdata">Load Test Data</a>
       <% } %>
   <% } %>
-
+  <a href="/admin">Admin</a>
 </nav>
 

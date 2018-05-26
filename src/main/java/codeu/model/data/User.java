@@ -40,6 +40,7 @@ public class User {
   private final String pictureURL;
   private final boolean superUser;
   private Integer rateLimit;
+  private boolean Banned;
 
   /**
    * Constructs a new User.
@@ -63,6 +64,7 @@ public class User {
     this.bio = "";
     this.pictureURL = "";
     this.superUser = false;
+    this.Banned = false;
   }
 
   /**
@@ -82,7 +84,8 @@ public class User {
    * @param rateLimit     the rateLimit of the user
    */
   private User(UUID newId, String newName, String newPassword, Instant newCreation, Integer newAge, String newFirstName,
-               String newLastName, String newEmail, String newPhoneNum, String newBio, String newPictureURL, boolean newSuperUser, Integer rateLimit, Integer messageCount) {
+               String newLastName, String newEmail, String newPhoneNum, String newBio, String newPictureURL, boolean newSuperUser, 
+               Integer rateLimit, Integer messageCount, boolean newBanned) {
     this.id = newId;
     this.name = newName;
     this.password = newPassword;
@@ -95,6 +98,7 @@ public class User {
     this.bio = newBio;
     this.pictureURL = newPictureURL;
     this.superUser = newSuperUser;
+    this.Banned = newBanned;
   }
 
   public static class Builder {
@@ -112,6 +116,7 @@ public class User {
     private boolean nestedSuperUser;
     private Integer nestedRateLimit;
     private Integer nestedMessageCount;
+    private boolean nestedBanned;
 
 
     public Builder(final UUID newId, final String newName, final String newPassword, final Instant newCreation) {
@@ -192,10 +197,15 @@ public class User {
       this.nestedMessageCount = newMessageCount;
       return this;
     }
+    
+    public Builder setBanned(boolean newBanned) {
+      this.nestedBanned = newBanned;
+      return this;
+    }
 
     public User createUser() {
       return new User(nestedId, nestedName, nestedPassword, nestedCreation, nestedAge, nestedFirstName, nestedLastName,
-              nestedEmail, nestedPhoneNum, nestedBio, nestedPictureURL, nestedSuperUser, nestedRateLimit, nestedMessageCount);
+              nestedEmail, nestedPhoneNum, nestedBio, nestedPictureURL, nestedSuperUser, nestedRateLimit, nestedMessageCount, nestedBanned);
     }
   }
 
@@ -304,4 +314,20 @@ public class User {
   public void removeRateLimit() {
     this.rateLimit = null;
   }
+  
+  /**
+   * Ban a user
+   */
+  public void ban(boolean newBan) {
+    this.Banned = newBan;
+  }
+  
+  
+  /**
+   * Returns true if this user is banned, false otherwise
+   */
+  public boolean isBanned() {
+    return Banned;
+  }
+  
 }
