@@ -99,5 +99,72 @@ public class AdminServletTest {
     
     Mockito.verify(mockResponse).sendRedirect("/login");
   }
+
+  @Test
+  public void testBanUserSuccessful() throws IOException, ServletException {
+    User user = new User(UUID.randomUUID(), "username", "password", Instant.now());
+    User.Builder userBuilder = new User.Builder(user.getId(), user.getName(), user.getPassword(), user.getCreationTime());
+    user = userBuilder.createUser();
+
+    User admin = new User(UUID.randomUUID(), "admin", "password", Instant.now());
+    User.Builder adminBuilder= new User.Builder(user.getId(), user.getName(), user.getPassword(), user.getCreationTime()).setSuperUser(true);
+    admin = adminBuilder.createUser();
+
+    Mockito.when(mockRequest.getSession().getAttribute("user")).thenReturn("admin");
+    Mockito.when(mockRequest.getParameter("username")).thenReturn("username");
+
+    Mockito.when(mockUserStore.getUser("admin")).thenReturn(admin);
+    Mockito.when(mockUserStore.getUser("username")).thenReturn(user);
+
+    adminServlet.doPost(mockRequest, mockResponse);
+
+    Assert.assertTrue(user.isBanned());
+  }
+
+  @Test
+  public void testRateUserSucessful() throws IOException, ServletException {
+    User user = new User(UUID.randomUUID(), "username", "password", Instant.now());
+    User.Builder userBuilder = new User.Builder(user.getId(), user.getName(), user.getPassword(), user.getCreationTime());
+    user = userBuilder.createUser();
+
+    User admin = new User(UUID.randomUUID(), "admin", "password", Instant.now());
+    User.Builder adminBuilder= new User.Builder(user.getId(), user.getName(), user.getPassword(), user.getCreationTime()).setSuperUser(true);
+    admin = adminBuilder.createUser();
+
+    Mockito.when(mockRequest.getParameter("banrate")).thenReturn("5");
+    Mockito.when(mockRequest.getSession().getAttribute("user")).thenReturn("admin");
+    Mockito.when(mockRequest.getParameter("username")).thenReturn("username");
+
+    Mockito.when(mockUserStore.getUser("admin")).thenReturn(admin);
+    Mockito.when(mockUserStore.getUser("username")).thenReturn(user);
+
+    adminServlet.doPost(mockRequest, mockResponse);
+
+    Assert.assertTrue(user.getRateLimit() == 5);
+
+  }
+
+  @Test
+  public void testUserNotAdmin() throws IOException, ServletException {
+    User user = new User(UUID.randomUUID(), "username", "password", Instant.now());
+    User.Builder userBuilder = new User.Builder(user.getId(), user.getName(), user.getPassword(), user.getCreationTime());
+    user = userBuilder.createUser();
+
+    //Not a super user
+    User admin = new User(UUID.randomUUID(), "admin", "password", Instant.now());
+    User.Builder adminBuilder= new User.Builder(user.getId(), user.getName(), user.getPassword(), user.getCreationTime());
+    admin = adminBuilder.createUser();
+
+    Mockito.when(mockRequest.getSession().getAttribute("user")).thenReturn("admin");
+    Mockito.when(mockRequest.getParameter("username")).thenReturn("username");
+
+    Mockito.when(mockUserStore.getUser("admin")).thenReturn(admin);
+    Mockito.when(mockUserStore.getUser("username")).thenReturn(user);
+
+    adminServlet.doPost(mockRequest, mockResponse);
+
+    Assert.assertTrue(!user.isBanned());
+
+  }
   
 }

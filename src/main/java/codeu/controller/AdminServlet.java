@@ -86,18 +86,20 @@ public class AdminServlet extends HttpServlet {
     User admin = userStore.getUser(adminname);
     User user = userStore.getUser(username);
     if (admin.isSuperUser()) {
-      if (banrate.compareTo("ban") == 0) {
-        userStore.deleteUser(user);
+      if (banrate == null) {
+        user.ban(true);
       } else {
         Integer rate = Integer.parseInt(banrate);
         user.setRateLimit(rate);
       }
+      response.sendRedirect("/admin");
     }
-
     else {
       request.setAttribute("error", "Not administrator.");
       return;
     }
+    response.sendRedirect("/admin");
   }
+
   
 }

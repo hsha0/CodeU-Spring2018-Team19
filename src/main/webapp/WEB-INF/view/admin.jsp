@@ -50,8 +50,8 @@
             %>
             <li class = "user">
                 <img src = "<%= pic %>" class = "avatar"/>
-                <strong><a href = "/user?user=<%= author %>"><%= author %></a>:%>
-                    Rate Limit:  </strong> <form href = "/admin" action = "POST"><input type = "text" name = "rate" id = "rate" value = "<%=user.getRateLimit()%>"> </form>
+                <strong><a href = "/user?user=<%= author %>"><%= author %></a>:
+                    Rate Limit:  </strong> <form action = "/admin?username=<%= author %>" method = "POST"><input type = "text" name = "banrate" id = "banrate" value = "<%=user.getRateLimit()%>"> </form>
                     <a href = "#" onclick = "ban('${author}')">Ban</a>
                 </strong>
             </li>
@@ -65,14 +65,14 @@
 </body>
 <script>
     function ban(username){
-        var url = "http://localhost:8080/admin?username="+username;
+        var url = "http://gcu-tnt.appspot.com/admin?username="+username;
         var xhr = new XMLHttpRequest();
         xhr.onload = function () {
             if (xhr.readyState != 4 || xhr.status != "200") {
                 console.error("Error deleting conversation");
             }
         }
-        xhr.open("POST", url, true);
+        xhr.open('POST', url, true);
         xhr.send(null);
     }
 </script>
